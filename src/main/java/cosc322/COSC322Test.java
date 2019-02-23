@@ -36,7 +36,7 @@ public class COSC322Test{
 	amazons = new Amazons(userName, passwd);	 
     }
  
-    @Override
+    
     public String userName() {
 	return userName;
     }
