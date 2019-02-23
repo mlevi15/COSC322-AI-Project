@@ -23,7 +23,7 @@ public class COSC322Test{
      * @param args for name and passwd (current, any string would work)
      */
     public static void main(String[] args) {				 
-	COSC322Test player_01 = new COSC322Test(args[0], args[1]);  		 
+	COSC322Test player_01 = new COSC322Test("user", "pass");  		 
     }
 	
     /**
