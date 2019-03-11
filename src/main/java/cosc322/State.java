@@ -8,8 +8,13 @@ import java.util.ArrayList;
  */
 
 public class State {
+    public static final int POS_MARKED_BLACK = 2;
+    public static final int POS_MARKED_WHITE = 1;
+    public static final int POS_AVAILABLE = 0;
+    public static final int POS_MARKED_ARROW = -1;
+    
     static int n = 10;
-    private String[][] state; //the state object at its core is a 2D array that holds all game data
+    private int[][] state; //the state object at its core is a 2D array that holds all game data
     private State parent; //parnet of this node
     private ArrayList<State> children; //children of this node
     private int wins; //number of wins that this branch state can result in
@@ -23,7 +28,7 @@ public class State {
         setSims(0);
     }
     
-    public State(String[][] state){
+    public State(int[][] state){
         setState(state);
         setParent(null);
         setChildren(new ArrayList<State>());
@@ -32,10 +37,23 @@ public class State {
     }
     
     public State(BoardGameModel bgm){
-        String[][] state = new String[n+1][n+1];
+        int[][] state = new int[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
-                state[i][j] = bgm.gameBoard[i][j];
+                switch(bgm.gameBoard[i][j]){
+                    case BoardGameModel.POS_MARKED_BLACK:
+                        state[i][j] = POS_MARKED_BLACK;
+                        break;
+                    case BoardGameModel.POS_MARKED_WHITE: 
+                        state[i][j] = POS_MARKED_WHITE;
+                        break;
+                    case BoardGameModel.POS_MARKED_ARROW:
+                        state[i][j] = POS_MARKED_ARROW;
+                        break;
+                    case BoardGameModel.POS_AVAILABLE:
+                        state[i][j] = POS_AVAILABLE;
+                        break;
+                }
             }
         }
         setState(state);
@@ -49,37 +67,34 @@ public class State {
         this.children.add(state);
     }
     
-    public static String[][] startingState(){
-        String[][] state = new String[n+1][n+1];
+    public static int[][] startingState(){
+        int[][] state = new int[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
-                state[i][j] = BoardGameModel.POS_AVAILABLE;
+                state[i][j] = POS_AVAILABLE;
             }
         }
-        
-        String tagB = BoardGameModel.POS_MARKED_BLACK;
-        String tagW = BoardGameModel.POS_MARKED_WHITE;
 
-        state[1][4] = tagW;
-        state[1][7] = tagW;
-        state[3][1] = tagW;
-        state[3][10] = tagW;
+        state[1][4] = POS_MARKED_WHITE;
+        state[1][7] = POS_MARKED_WHITE;
+        state[3][1] = POS_MARKED_WHITE;
+        state[3][10] = POS_MARKED_WHITE;
 
-        state[8][1] = tagB;
-        state[8][10] = tagB;
-        state[10][4] = tagB;
-        state[10][7] = tagB;
+        state[8][1] = POS_MARKED_BLACK;;
+        state[8][10] = POS_MARKED_BLACK;;
+        state[10][4] = POS_MARKED_BLACK;;
+        state[10][7] = POS_MARKED_BLACK;
         
         return state;
     }
     
     
     /**GETTERS AND SETTERS**/
-    public void setState(String[][] state){
+    public void setState(int[][] state){
         this.state = state;
     }
     
-    public String[][] getState(){
+    public int[][] getState(){
         return this.state;
     }
     

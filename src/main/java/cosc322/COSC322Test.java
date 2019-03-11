@@ -16,6 +16,7 @@ public class COSC322Test{
  
     public static void main(String[] args) {
 	COSC322Test player_01 = new COSC322Test("user", "pass");  
+        u.print(new State().toString());
     }
 	
     public COSC322Test(String userName, String passwd) {
