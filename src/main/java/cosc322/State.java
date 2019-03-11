@@ -32,7 +32,7 @@ public class State {
     }
     
     public State(BoardGameModel bgm){
-        String[][] state = new String[n][n];
+        String[][] state = new String[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
                 state[i][j] = bgm.gameBoard[i][j];
@@ -50,7 +50,7 @@ public class State {
     }
     
     public static String[][] startingState(){
-        String[][] state = new String[n][n];
+        String[][] state = new String[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
                 state[i][j] = BoardGameModel.POS_AVAILABLE;
