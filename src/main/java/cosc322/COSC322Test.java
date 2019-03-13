@@ -16,12 +16,21 @@ public class COSC322Test{
  
     public static void main(String[] args) {
 	COSC322Test player_01 = new COSC322Test("user", "pass");  
-        u.print(new State().toString());
+        State s = new State();
+        u.print(s.getWhiteQueensPos().get(0).toString());
+        u.print(s.getWhiteQueensPos().get(1).toString());
+        u.print(s.getWhiteQueensPos().get(2).toString());
+        u.print(s.getWhiteQueensPos().get(3).toString());
+        
+        u.print(s.getBlackQueensPos().get(0).toString());
+        u.print(s.getBlackQueensPos().get(1).toString());
+        u.print(s.getBlackQueensPos().get(2).toString());
+        u.print(s.getBlackQueensPos().get(3).toString());
     }
 	
     public COSC322Test(String userName, String passwd) {
 	this.userName = userName;
-	amazons = new Amazons(userName, passwd);	 
+	//amazons = new Amazons(userName, passwd);	 
     }
     
     public String userName() {

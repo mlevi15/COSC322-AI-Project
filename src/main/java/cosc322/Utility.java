@@ -16,7 +16,10 @@ public class Utility {
     }
     
     public void print(String msg){
-        System.out.print(msg);
+        System.out.println(msg);
     }
     
+    public void print(int i){
+        System.out.println(i);
+    }
 }
