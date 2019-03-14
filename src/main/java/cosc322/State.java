@@ -14,6 +14,8 @@ public class State {
     public static final int POS_AVAILABLE = 0;
     public static final int POS_MARKED_ARROW = -1;
     
+    Utility u = new Utility();
+    
     static int n = 10;
     private int[][] board; //the state object at its core is a 2D array that holds all game data
     private State parent; //parnet of this node
@@ -102,7 +104,7 @@ public class State {
         ArrayList<Position> w = getWhiteQueensPos();
         ArrayList<Position> b = getBlackQueensPos();
         Iterator wIter = w.iterator();
-        Iterator bIter = w.iterator();
+        Iterator bIter = b.iterator();
         
          while(bIter.hasNext()){
             if(canPlayerMove((Position)bIter.next())){
@@ -212,6 +214,11 @@ public class State {
             neigh.add(botLeft);
             neigh.add(left);
         }
+        String s = "Player: " + p.toString() + " || Neighbors: " + neigh.toString() + " || Values: ";
+        Iterator it = neigh.iterator();
+        while(it.hasNext())
+            s += this.getValue((Position)it.next()) + ", ";
+        u.print(s);
         return neigh;
     }
     
