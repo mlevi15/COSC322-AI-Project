@@ -214,11 +214,15 @@ public class State {
             neigh.add(botLeft);
             neigh.add(left);
         }
-        String s = "Player: " + p.toString() + " || Neighbors: " + neigh.toString() + " || Values: ";
-        Iterator it = neigh.iterator();
-        while(it.hasNext())
-            s += this.getValue((Position)it.next()) + ", ";
-        u.print(s);
+        
+        /**FOR TESTING PURPOSES-------------------------------------------------------------------------------------------------
+            String s = "Player: " + p.toString() + " || Neighbors: " + neigh.toString() + " || Values: ";
+            Iterator it = neigh.iterator();
+            while(it.hasNext())
+                s += this.getValue((Position)it.next()) + ", ";
+            u.print(s); 
+        -----------------------------------------------------------------------------------------------------------------------**/
+        
         return neigh;
     }
     

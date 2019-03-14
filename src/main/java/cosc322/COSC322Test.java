@@ -127,31 +127,31 @@ public class COSC322Test{
 
         State s1= new State(test1);
         u.print(s1.toString());
-        u.print(s1.checkGoalState());
+        u.print("Goal State: " + s1.checkGoalState() + "\n");
         
         State s2 = new State(test2);
         u.print(s2.toString());
-        u.print(s2.checkGoalState());
+        u.print("Goal State: " + s2.checkGoalState() + "\n");
         
         State s3 = new State(test3);
         u.print(s3.toString());
-        u.print(s3.checkGoalState());
+        u.print("Goal State: " + s3.checkGoalState() + "\n");
         
         State s4 = new State(test4);
         u.print(s4.toString());
-        u.print(s4.checkGoalState());
+        u.print("Goal State: " + s4.checkGoalState() + "\n");
         
         State s5 = new State(test5);
         u.print(s5.toString());
-        u.print(s5.checkGoalState());
+        u.print("Goal State: " + s5.checkGoalState() + "\n");
         
         State s6 = new State(test6);
         u.print(s6.toString());
-        u.print(s6.checkGoalState());
+        u.print("Goal State: " + s6.checkGoalState() + "\n");
         
         State s7 = new State(test7);
         u.print(s7.toString());
-        u.print(s7.checkGoalState());
+        u.print("Goal State: " + s7.checkGoalState() + "\n");
     }
     public String userName() {
 	return userName;
