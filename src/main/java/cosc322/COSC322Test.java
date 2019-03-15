@@ -33,7 +33,7 @@ public class COSC322Test{
 	
     public COSC322Test(String userName, String passwd) {
 	this.userName = userName;
-	//amazons = new Amazons(userName, passwd);
+	amazons = new Amazons(userName, passwd);
         //testCheckGoalState();
     }
     
