@@ -36,7 +36,6 @@ public class COSC322Test{
 	//amazons = new Amazons(userName, passwd);
     }
     
-    
     public void testCheckGoalState(){
         int[][] test1 = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                         {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 

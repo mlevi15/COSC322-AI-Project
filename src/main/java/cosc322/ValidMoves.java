@@ -27,6 +27,10 @@ public class ValidMoves {
             this.queens = state.getBlackQueensPos();
     }
     
+    public void buildValidMoves(){
+        //takes the initialized state and constructs the 3D array list
+    }
+    
     public boolean isAvailable(Position p){
         //Return false if the passed position is on a border, on a players, or on an arrow
         return true;
