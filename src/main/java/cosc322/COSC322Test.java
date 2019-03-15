@@ -34,6 +34,7 @@ public class COSC322Test{
     public COSC322Test(String userName, String passwd) {
 	this.userName = userName;
 	//amazons = new Amazons(userName, passwd);
+        //testCheckGoalState();
     }
     
     public void testCheckGoalState(){
@@ -123,31 +124,31 @@ public class COSC322Test{
         
         
 
-        State s1= new State(test1);
+        State s1= new State(test1, 1);
         u.print(s1.toString());
         u.print("Goal State: " + s1.checkGoalState() + "\n");
         
-        State s2 = new State(test2);
+        State s2 = new State(test2, 1);
         u.print(s2.toString());
         u.print("Goal State: " + s2.checkGoalState() + "\n");
         
-        State s3 = new State(test3);
+        State s3 = new State(test3, 1);
         u.print(s3.toString());
         u.print("Goal State: " + s3.checkGoalState() + "\n");
         
-        State s4 = new State(test4);
+        State s4 = new State(test4, 1);
         u.print(s4.toString());
         u.print("Goal State: " + s4.checkGoalState() + "\n");
         
-        State s5 = new State(test5);
+        State s5 = new State(test5, 1);
         u.print(s5.toString());
         u.print("Goal State: " + s5.checkGoalState() + "\n");
         
-        State s6 = new State(test6);
+        State s6 = new State(test6, 1);
         u.print(s6.toString());
         u.print("Goal State: " + s6.checkGoalState() + "\n");
         
-        State s7 = new State(test7);
+        State s7 = new State(test7, 1);
         u.print(s7.toString());
         u.print("Goal State: " + s7.checkGoalState() + "\n");
     }

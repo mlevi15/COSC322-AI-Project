@@ -51,16 +51,16 @@ public class State {
             for(int j = 1; j < n + 1; j++){
                 switch(bgm.gameBoard[i][j]){
                     case BoardGameModel.POS_MARKED_BLACK:
-                        state[i][j] = POS_MARKED_BLACK;
+                        board[i][j] = POS_MARKED_BLACK;
                         break;
                     case BoardGameModel.POS_MARKED_WHITE: 
-                        state[i][j] = POS_MARKED_WHITE;
+                        board[i][j] = POS_MARKED_WHITE;
                         break;
                     case BoardGameModel.POS_MARKED_ARROW:
-                        state[i][j] = POS_MARKED_ARROW;
+                        board[i][j] = POS_MARKED_ARROW;
                         break;
                     case BoardGameModel.POS_AVAILABLE:
-                        state[i][j] = POS_AVAILABLE;
+                        board[i][j] = POS_AVAILABLE;
                         break;
                 }
             }
