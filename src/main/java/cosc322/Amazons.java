@@ -103,7 +103,7 @@ public class Amazons extends GamePlayer{
 
         contentPane.add(Box.createVerticalGlue()); 
 
-        board = createGameBoard();		
+        board = createGameBoard();
         contentPane.add(board,  BorderLayout.CENTER);
     }
     
