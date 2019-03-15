@@ -250,6 +250,22 @@ public class State {
         return pos;
     }
     
+    //TODO: Karanmeet - Build getValidMoves method
+    public ArrayList<ArrayList<Position>> getValidMoves(int player){
+        ArrayList<ArrayList<Position>> pos = new ArrayList<ArrayList<Position>>();
+        ArrayList<Position> q;
+        if(player == 1)
+            q = getWhiteQueensPos();
+        else
+            q = getBlackQueensPos();
+        
+        //Given the arraylist of queens positions iterate through all positions and find all posible move positions and all possible arrow positions for each move
+        //Iterate away from the queen position in all valid directions and stop in each direction when you've either hit a border, an arrow (-1), or a queen (1 or 2)
+        //Do the same again but with the above positions to find the arrow positions
+        
+        
+        return pos;
+    }
     
     /**GETTERS AND SETTERS**/
     public int getValue(Position p){
