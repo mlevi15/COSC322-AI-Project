@@ -20,27 +20,33 @@ public class State {
     private int[][] board; //the state object at its core is a 2D array that holds all game data
     private State parent; //parnet of this node
     private ArrayList<State> children; //children of this node
+    private int playersTurn;
+    private ValidMoves moves;
     private int wins; //number of wins that this branch state can result in
     private int sims; //number of total simulations in this branch
     
     public State(){
-        setBoard(startingState());
-        setParent(null);
-        setChildren(new ArrayList<State>());
-        setWins(0);
-        setSims(0);
+        this.board = startingState();
+        this.parent = null;
+        this.children = new ArrayList<State>();
+        this.playersTurn = 1;
+        setMoves(this, this.playersTurn);
+        this.wins = 0;
+        this.sims = 0;
     }
     
-    public State(int[][] state){
-        setBoard(state);
-        setParent(null);
-        setChildren(new ArrayList<State>());
-        setWins(0);
-        setSims(0);
+    public State(int[][] board, int playersTurn){
+        this.board = board;
+        this.parent = null;
+        this.children = new ArrayList<State>();
+        this.playersTurn = playersTurn;
+        setMoves(this, this.playersTurn);
+        this.wins = 0;
+        this.sims = 0;
     }
     
-    public State(BoardGameModel bgm){
-        int[][] state = new int[n+1][n+1];
+    public State(BoardGameModel bgm, int playerTurn){
+        int[][] board = new int[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
                 switch(bgm.gameBoard[i][j]){
@@ -59,11 +65,13 @@ public class State {
                 }
             }
         }
-        setBoard(state);
-        setParent(null);
-        setChildren(new ArrayList<State>());
-        setWins(0);
-        setSims(0);
+        this.board = board;
+        this.parent = null;
+        this.children = new ArrayList<State>();
+        this.playersTurn = playersTurn;
+        setMoves(this, this.playersTurn);
+        this.wins = 0;
+        this.sims = 0;
     }
     
     public void addChild(State state){
@@ -250,7 +258,6 @@ public class State {
         return pos;
     }
     
-    
     /**GETTERS AND SETTERS**/
     public int getValue(Position p){
         return board[p.i][p.j];
@@ -290,6 +297,22 @@ public class State {
     
     public ArrayList<State> getChildren(){
         return this.children;
+    }
+    
+    public void setPlayersTurn(int playerTurn){
+        this.playersTurn = playersTurn;
+    }
+    
+    public int getPlayersTurn(){
+        return this.playersTurn;
+    }
+    
+    public void setMoves(State state, int playersTurn){
+        this.moves = new ValidMoves(state, playersTurn);
+    }
+    
+    public ValidMoves getMoves(){
+        return this.moves;
     }
     
     public void setWins(int wins){
