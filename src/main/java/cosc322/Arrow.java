@@ -34,7 +34,7 @@ public class Arrow {
         for(int i = currentQueenPos.j + 1; i < 11; i++){
             Position p = new Position(currentQueenPos.i, i);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);s.setValue(currentQueenPos, 0);
+                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
                 s.setValue(p, -1);
                 this.shots.add(s);
             }
@@ -72,7 +72,7 @@ public class Arrow {
         while(i > 0 && j > 1){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);s.setValue(currentQueenPos, 0);
+                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
                 s.setValue(p, -1);
                 this.shots.add(s);
             }  
@@ -86,7 +86,7 @@ public class Arrow {
         while(i > 0 && j < 11){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);s.setValue(currentQueenPos, 0);
+                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
                 s.setValue(p, -1);
                 this.shots.add(s);
             }  
@@ -100,7 +100,7 @@ public class Arrow {
         while(i < 11 && j < 11){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);s.setValue(currentQueenPos, 0);
+                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
                 s.setValue(p, -1);
                 this.shots.add(s);
             }  
@@ -114,7 +114,7 @@ public class Arrow {
         while(i < 11 && j > 0){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);s.setValue(currentQueenPos, 0);
+                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
                 s.setValue(p, -1);
                 this.shots.add(s);
             }  
