@@ -36,7 +36,64 @@ public class COSC322Test{
 	this.userName = userName;
 	//amazons = new Amazons(userName, passwd);
         //testCheckGoalState();
-        testChildGeneration();
+        //testChildGeneration();
+        //detectChange();
+        testSolace();
+    }
+    
+     public void testSolace(){
+         State state = new State();
+         Solace solace = new Solace(state);
+         solace.think();
+     }
+     
+      public void detectChange(){
+        int[][] testrandom = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, -1, -1,  0,  0,  0,  0,  0,  0, -1, -1},
+                        {0,  2, -1,  0,  0,  0,  0,  0,  0, -1, 2},
+                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+                        {0,  0,  0, -1,  2, -1, -1,  2, -1,  0, 0}};
+        int[][] testchange = {{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, -1, 0,  0,  0,  0,  0,  0,  0, -1, -1},
+                        {0,  2, -1,  0,  0,  0,  0,  0,  0, -1, 2},
+                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+                        {0,  0,  0, -1,  2, -1, -1,  2, -1,  0, 0}};
+        
+        Position newarrowposition = null;
+        Position newqueenposition = null;
+        Position oldqueenposition = null;
+        for(int i = 0; i < testrandom.length; i++){
+            for(int j = 0; j < testchange.length; j++){
+                if(testrandom[i][j] != testchange[i][j]){
+                    if(testchange[i][j] == -1){
+                         newarrowposition = new Position(i,j);
+                    }
+                    else if(testchange[i][j] == 1 || testchange[i][j] == 2){
+                         newqueenposition = new Position(i,j);
+                    }   
+                    else if(testrandom[i][j] == 1 || testrandom[i][j] == 2){
+                         oldqueenposition = new Position(i,j);
+                    }  
+                }
+            }
+        }
+        
+        System.out.println(newarrowposition.toString());
+        System.out.println(newqueenposition.toString());
+        System.out.println(oldqueenposition.toString());
+
     }
     
     public void testChildGeneration(){
