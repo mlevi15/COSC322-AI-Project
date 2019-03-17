@@ -19,12 +19,18 @@ public class Queen {
     public void setMoves(){
         this.moves = new ArrayList<State>();
         int playersTurn = this.state.getPlayersTurn();
+        int nextTurn = 0;
+        if(playersTurn == 1)
+            nextTurn = 2;
+        if(playersTurn == 2)
+            nextTurn = 1;
+        
         
         //iterate to the left of queen position
         for(int i = currentQueenPos.j - 1; i > 0; i--){
             Position p = new Position(currentQueenPos.i, i);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -40,7 +46,7 @@ public class Queen {
         for(int i = currentQueenPos.j + 1; i < 11; i++){
             Position p = new Position(currentQueenPos.i, i);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -56,7 +62,7 @@ public class Queen {
         for(int i = currentQueenPos.i - 1; i > 0; i--){
             Position p = new Position(i, currentQueenPos.j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -72,7 +78,7 @@ public class Queen {
         for(int i = currentQueenPos.i + 1; i < 11; i++){
             Position p = new Position(i, currentQueenPos.j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -90,7 +96,7 @@ public class Queen {
         while(i > 0 && j > 1){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -110,7 +116,7 @@ public class Queen {
         while(i > 0 && j < 11){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -130,7 +136,7 @@ public class Queen {
         while(i < 11 && j < 11){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);
@@ -150,7 +156,7 @@ public class Queen {
         while(i < 11 && j > 0){
             Position p = new Position(i, j);
             if(this.state.getValue(p) == 0){
-                State s = new State(u.copyBoard(this.state.getBoard()), playersTurn + 1);
+                State s = new State(u.copyBoard(this.state.getBoard()), nextTurn);
                 s.setValue(currentQueenPos, 0);
                 s.setValue(p, playersTurn);
                 Arrow a = new Arrow(p, s);

@@ -74,7 +74,19 @@ public class COSC322Test{
                         {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
                         {0,  0,  0, -1,  2, -1, -1,  2, -1,  0, 0}};
         
-        State state = new State(test, 2);
+        int[][] test3 = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, -1, 0, 2, 0, 0, 2, 0, 0, 0}};
+        
+        State state = new State(test3, 2);
         ArrayList<State> children = state.getPossibleMoves();
         u.print("Total Possible moves at current level: " + children.size());
         u.print("Root State: ");
