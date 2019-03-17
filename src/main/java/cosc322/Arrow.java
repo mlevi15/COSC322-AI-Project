@@ -5,11 +5,12 @@ import java.util.ArrayList;
 public class Arrow {
     
     Position newQueen;
-    ArrayList<Position> shots;
     State state;
+    ArrayList<Position> shots;
     
-    public Arrow(){
-    
+    public Arrow(State state, Position newQueen){
+        this.state = state;
+        this.newQueen = newQueen;
     }
     
 }

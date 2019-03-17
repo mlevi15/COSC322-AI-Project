@@ -17,35 +17,39 @@ public class State {
     Utility u = new Utility();
     
     static int n = 10;
+    private int playersTurn; //the player who is analysing this board to make a move (1 or 2, black or white)
     private int[][] board; //the state object at its core is a 2D array that holds all game data
+    private ArrayList<Position> blackQueens; //the positions of all black queens on the current board
+    private ArrayList<Position> whiteQueens; //the positions of all white queens on the current board
     private State parent; //parnet of this node
     private ArrayList<State> children; //children of this node
-    private int playersTurn;
-    private ValidMoves moves;
     private int wins; //number of wins that this branch state can result in
     private int sims; //number of total simulations in this branch
     
     public State(){
-        this.board = startingState();
-        this.parent = null;
-        this.children = new ArrayList<State>();
         this.playersTurn = 1;
-        setMoves(this, this.playersTurn);
-        this.wins = 0;
-        this.sims = 0;
-    }
-    
-    public State(int[][] board, int playersTurn){
-        this.board = board;
+        this.board = startingState();
+        this.blackQueens = getBlackQueensPos();
+        this.whiteQueens = getWhiteQueensPos();
         this.parent = null;
-        this.children = new ArrayList<State>();
+        this.children = getPossibleMoves();
+        this.wins = 0;
+        this.sims = 0;
+        
+    }
+    
+    public State(int[][] board, State parent, int playersTurn){
         this.playersTurn = playersTurn;
-        setMoves(this, this.playersTurn);
+        this.board = board;
+        this.blackQueens = getBlackQueensPos();
+        this.whiteQueens = getWhiteQueensPos();
+        this.parent = parent;
+        this.children = getPossibleMoves();
         this.wins = 0;
         this.sims = 0;
     }
     
-    public State(BoardGameModel bgm, int playerTurn){
+    public State(BoardGameModel bgm, State parent, int playerTurn){
         int[][] board = new int[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
@@ -65,17 +69,14 @@ public class State {
                 }
             }
         }
-        this.board = board;
-        this.parent = null;
-        this.children = new ArrayList<State>();
         this.playersTurn = playersTurn;
-        setMoves(this, this.playersTurn);
+        this.board = board;
+        this.blackQueens = getBlackQueensPos();
+        this.whiteQueens = getWhiteQueensPos();
+        this.parent = parent;
+        this.children = getPossibleMoves();
         this.wins = 0;
         this.sims = 0;
-    }
-    
-    public void addChild(State state){
-        this.children.add(state);
     }
     
     public static int[][] startingState(){
@@ -109,10 +110,8 @@ public class State {
         boolean win = true;
         boolean lose = true;
         
-        ArrayList<Position> w = getWhiteQueensPos();
-        ArrayList<Position> b = getBlackQueensPos();
-        Iterator wIter = w.iterator();
-        Iterator bIter = b.iterator();
+        Iterator wIter = this.whiteQueens.iterator();
+        Iterator bIter = this.blackQueens.iterator();
         
          while(bIter.hasNext()){
             if(canPlayerMove((Position)bIter.next())){
@@ -239,7 +238,7 @@ public class State {
         int[][] board = getBoard();
         for(int i = 0; i < n + 1; i++){
             for(int j = 0; j < n + 1; j++){
-                if(board[i][j] == 2)
+                if(board[i][j] == 1)
                     pos.add(new Position(i, j));
             }
         }
@@ -251,11 +250,29 @@ public class State {
         int[][] board = getBoard();
         for(int i = 0; i < n + 1; i++){
             for(int j = 0; j < n + 1; j++){
-                if(board[i][j] == 1)
+                if(board[i][j] == 2)
                     pos.add(new Position(i, j));
             }
         }
         return pos;
+    }
+    
+    public ArrayList<State> getPossibleMoves(){
+        ArrayList<State> moves = new ArrayList<State>();
+        ArrayList<Position> queens;
+        if(playersTurn == 1)
+            queens = this.blackQueens;
+        else
+            queens = this.whiteQueens;
+        
+        Queen q1 = new Queen(this, queens.get(0));
+        Queen q2 = new Queen(this, queens.get(1));
+        Queen q3 = new Queen(this, queens.get(2));
+        Queen q4 = new Queen(this, queens.get(3));
+        
+        
+        
+        return moves;
     }
     
     /**GETTERS AND SETTERS**/
@@ -275,12 +292,36 @@ public class State {
         this.board[i][j] = v;
     }
     
+    public void setPlayersTurn(int playerTurn){
+        this.playersTurn = playersTurn;
+    }
+    
+    public int getPlayersTurn(){
+        return this.playersTurn;
+    }
+    
     public void setBoard(int[][] board){
         this.board = board;
     }
     
     public int[][] getBoard(){
         return this.board;
+    }
+    
+    public void setBlackQueens(ArrayList<Position> queens){
+        this.blackQueens = queens;
+    }
+    
+    public ArrayList<Position> getBlackQueens(){
+        return blackQueens;
+    }
+    
+     public void setWhiteQueens(ArrayList<Position> queens){
+        this.whiteQueens = queens;
+    }
+    
+    public ArrayList<Position> getWhiteQueens(){
+        return whiteQueens;
     }
     
     public void setParent(State parent){
@@ -297,22 +338,6 @@ public class State {
     
     public ArrayList<State> getChildren(){
         return this.children;
-    }
-    
-    public void setPlayersTurn(int playerTurn){
-        this.playersTurn = playersTurn;
-    }
-    
-    public int getPlayersTurn(){
-        return this.playersTurn;
-    }
-    
-    public void setMoves(State state, int playersTurn){
-        this.moves = new ValidMoves(state, playersTurn);
-    }
-    
-    public ValidMoves getMoves(){
-        return this.moves;
     }
     
     public void setWins(int wins){
