@@ -32,24 +32,24 @@ public class State {
         this.blackQueens = getBlackQueensPos();
         this.whiteQueens = getWhiteQueensPos();
         this.parent = null;
-        this.children = getPossibleMoves();
+        this.children = null;
         this.wins = 0;
         this.sims = 0;
         
     }
     
-    public State(int[][] board, State parent, int playersTurn){
+    public State(int[][] board, int playersTurn){
         this.playersTurn = playersTurn;
         this.board = board;
         this.blackQueens = getBlackQueensPos();
         this.whiteQueens = getWhiteQueensPos();
-        this.parent = parent;
-        this.children = getPossibleMoves();
+        this.parent = null;
+        this.children = null;
         this.wins = 0;
         this.sims = 0;
     }
     
-    public State(BoardGameModel bgm, State parent, int playerTurn){
+    public State(BoardGameModel bgm, int playerTurn){
         int[][] board = new int[n+1][n+1];
         for(int i = 1; i < n + 1; i++){
             for(int j = 1; j < n + 1; j++){
@@ -73,8 +73,8 @@ public class State {
         this.board = board;
         this.blackQueens = getBlackQueensPos();
         this.whiteQueens = getWhiteQueensPos();
-        this.parent = parent;
-        this.children = getPossibleMoves();
+        this.parent = null;
+        this.children = null;
         this.wins = 0;
         this.sims = 0;
     }
@@ -106,28 +106,29 @@ public class State {
     * returned, if it is a losing state a -1 is returned, and if it is neither or a 
     * non-goal state a 0 is returned.
     **/
-    public int checkGoalState(){
-        boolean win = true;
-        boolean lose = true;
-        
+    public int checkGoalState(int player){
+        boolean canBlackMove = false;
+        boolean canWhiteMove = false;
         Iterator wIter = this.whiteQueens.iterator();
         Iterator bIter = this.blackQueens.iterator();
         
          while(bIter.hasNext()){
-            if(canPlayerMove((Position)bIter.next())){
-                win = false;
-            }
+             if(canPlayerMove((Position)bIter.next())) 
+                 canBlackMove = true;
         }
          
         while(wIter.hasNext()){
-            if(canPlayerMove((Position)wIter.next())){
-                lose = false;
-            }
+            if(canPlayerMove((Position)wIter.next()))
+                canWhiteMove = true;
         }
-       
-        if(win)
+        
+        if(player == 1 && !canWhiteMove)
             return 1;
-        else if(lose)
+        else if(player == 2 && !canBlackMove)
+            return 1;
+        else if(player == 1 && !canBlackMove)
+            return -1;
+        else if(player == 2 && !canWhiteMove)
             return -1;
         else
             return 0;
@@ -259,19 +260,25 @@ public class State {
     
     public ArrayList<State> getPossibleMoves(){
         ArrayList<State> moves = new ArrayList<State>();
-        ArrayList<Position> queens;
+        ArrayList<Position> queenPos;
         if(playersTurn == 1)
-            queens = this.blackQueens;
+            queenPos = this.blackQueens;
         else
-            queens = this.whiteQueens;
+            queenPos = this.whiteQueens;
         
-        Queen q1 = new Queen(this, queens.get(0));
-        Queen q2 = new Queen(this, queens.get(1));
-        Queen q3 = new Queen(this, queens.get(2));
-        Queen q4 = new Queen(this, queens.get(3));
+        ArrayList<Queen> queens = new ArrayList<Queen>();
+        queens.add(new Queen(this, queenPos.get(0)));
+        queens.add(new Queen(this, queenPos.get(1)));
+        queens.add(new Queen(this, queenPos.get(2)));
+        queens.add(new Queen(this, queenPos.get(3)));
         
-        
-        
+        for(int i = 0; i < queens.size(); i++){
+            Queen q = queens.get(i);
+            ArrayList<State> queenMoves = q.getMoves();
+            for(int j = 0; j < queenMoves.size(); j++){
+                moves.add(queenMoves.get(j));
+            }
+        }
         return moves;
     }
     
