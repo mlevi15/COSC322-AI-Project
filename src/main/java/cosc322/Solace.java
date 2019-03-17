@@ -8,7 +8,7 @@ package cosc322;
 public class Solace {
     
     State root;
-    
+    // test commit
     public Solace(State root){
         this.root = root;
     }
