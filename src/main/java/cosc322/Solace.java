@@ -7,5 +7,11 @@ package cosc322;
  */
 public class Solace {
     
+    State root;
+    
+    public Solace(State root){
+        this.root = root;
+    }
+    
 }
 
