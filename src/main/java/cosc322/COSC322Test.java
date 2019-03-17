@@ -36,8 +36,8 @@ public class COSC322Test{
 	this.userName = userName;
 	//amazons = new Amazons(userName, passwd);
         //testCheckGoalState();
-        testChildGeneration();
-         detectChange();
+        //testChildGeneration();
+        detectChange();
         testSolace();
 
     }

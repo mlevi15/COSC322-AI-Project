@@ -25,17 +25,17 @@ State root;
     public void think(){
         double maxratio = 0;
         int node = 0;
-
+                                    
         root.setChildren(root.getPossibleMoves());
         int numchildren = root.getChildren().size();//getting the number of children
-        while((secondtimer - firsttimer) < 20){
+        while(true){
             secondtimer = System.currentTimeMillis();
-            int randomnumber = rand.nextInt(numchildren); //picking a random "node" between 0-(numchildren-1)
+            int randomnumber = rand.nextInt(numchildren); //picking a random "node" ebetween 0-(numchildren-1)
             rootrandomchild = root.getChildren().get(randomnumber);
             System.out.println(rootrandomchild.toString());
             rootrandomchild.setParent(null);
             
-            while(rootrandomchild.checkGoalState(1) == 0){
+            while(rootrandomchild.getPossibleMoves().isEmpty()){
                 rootrandomchild.setChildren(rootrandomchild.getPossibleMoves());
                 int nchildren = rootrandomchild.getChildren().size();
                 int rnumber = rand.nextInt(nchildren);
@@ -61,31 +61,31 @@ State root;
                 rootrandomchild = rootrandomchild.getParent();
             }    
         }
-        for(int i = 0; i < numchildren; i++){
-            double wins = root.getChildren().get(i).getWins();
-            double sims = root.getChildren().get(i).getSims();
-            if(maxratio < (wins/sims)){
-                maxratio = (wins/sims);
-                node = i;
-            }
-        }
-        int originalboard[][] = root.getBoard();
-        int newboard[][] = rootrandomchild.getBoard();
-        for(int i = 0; i < originalboard.length; i++){
-            for(int j = 0; j < newboard.length; j++){
-                if(originalboard[i][j] != newboard[i][j]){
-                    if(newboard[i][j] == -1){
-                        newarrowposition = new Position(i,j);
-                    }
-                    else if(newboard[i][j] == 1 || newboard[i][j] == 2){
-                        newqueenposition = new Position(i,j);
-                    }   
-                    else if(originalboard[i][j] == 1 || originalboard[i][j] == 2){
-                        oldqueenposition = new Position(i,j);
-                    }  
-                }
-            }
-        }
+//        for(int i = 0; i < numchildren; i++){
+//            double wins = root.getChildren().get(i).getWins();
+//            double sims = root.getChildren().get(i).getSims();
+//            if(maxratio < (wins/sims)){
+//                maxratio = (wins/sims);
+//                node = i;
+//            }
+//        }
+//        int originalboard[][] = root.getBoard();
+//        int newboard[][] = rootrandomchild.getBoard();
+//        for(int i = 0; i < originalboard.length; i++){
+//            for(int j = 0; j < newboard.length; j++){
+//                if(originalboard[i][j] != newboard[i][j]){
+//                    if(newboard[i][j] == -1){
+//                        newarrowposition = new Position(i,j);
+//                    }
+//                    else if(newboard[i][j] == 1 || newboard[i][j] == 2){
+//                        newqueenposition = new Position(i,j);
+//                    }   
+//                    else if(originalboard[i][j] == 1 || originalboard[i][j] == 2){
+//                        oldqueenposition = new Position(i,j);
+//                    }  
+//                }
+//            }
+//        }
         
         
     }
