@@ -23,6 +23,14 @@ public class Utility {
         System.out.println(i);
     }
     
+    public void print(double d){
+        System.out.println(d);
+    }
+    
+    public void print(long l){
+        System.out.println(l);
+    }
+    
     public void print(boolean b){
         System.out.println(b);
     }
