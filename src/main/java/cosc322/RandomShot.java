@@ -1,6 +1,7 @@
 package cosc322;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class RandomShot {
@@ -14,126 +15,168 @@ public class RandomShot {
 
     public RandomShot(Position oldQueenPos, Position newQueenPos, State state){
         this.currentQueen = newQueenPos;
+        state.setValue(oldQueenPos, 0);
+        state.setValue(newQueenPos, state.turn);
         this.state = state;
-        this.state.setValue(oldQueenPos, 0);
-        this.state.setValue(newQueenPos, this.state.turn);
-        this.state.queens = this.state.getPlayersQueens();
         this.ranState = getRandomShot();
+        this.state.queens = state.getPlayersQueens();
+        
+        
     }
     
-    public State getRandomShot(){
+    private State getRandomShot(){
         int count = 0;
         State s = null;
+        
+        boolean[] canMove = {true, true, true, true, true, true, true, true};
         
         while(s == null && count < 8){
             int randDir = r.nextInt(8);
             switch(randDir){
                 case 0:
-                    s = up();
+                    if(canMove[0]){
+                        canMove[0] = false;
+                        s = up();
+                    }
                     if(s == null)
                         break;
                     else
                         return s;
                 case 1:
-                    s = right();
+                    if(canMove[1]){
+                        canMove[1] = false;
+                        s = right();
+                    }
                     if(s == null)
                         break;
                     else
                         return s;
                 case 2:
-                    s = down();
+                    if(canMove[2]){
+                        canMove[2] = false;
+                        s = down();
+                    }
                     if(s == null)
                         break;
                     else
                         return s;
                 case 3:
-                    s = left();
+                    if(canMove[3]){
+                        canMove[3] = false;
+                        s = left();
+                    }
                     if(s == null)
                         break;
                     else
                         return s;
                 case 4:
-                    s = upLeft();
+                    if(canMove[4]){
+                        canMove[4] = false;
+                         s = upLeft();
+                    }
                     if(s == null)
                         break;
                     else
                         return s;
                 case 5:
-                    s = upRight();
-                    if(s == null)
+                    if(canMove[5]){
+                        canMove[5] = false;
+                        s = upRight();
+                    }
+                    if(s == null) 
                         break;
-                    else
+                    else 
                         return s;
                 case 6:
-                    s = downRight();
-                    if(s == null)
+                    if(canMove[6]){
+                        canMove[6] = false;
+                        s = downRight();
+                    }
+                    if(s == null) 
                         break;
                     else
                         return s;
                 case 7:
-                    s = downLeft();
-                    if(s == null)
+                    
+                    if(canMove[7]){
+                        canMove[7] = false;
+                        s = downLeft();
+                    }
+                    if(s == null) 
                         break;
                     else
                         return s;
-            } 
+            }
             count++;
         }
-        return checkAllDirections();       
+        
+        if(count < 8)
+            return s;
+        else
+            return checkAllDirections(canMove);        
     }
     
-    public State checkAllDirections(){
-        State s = state;
-        for(int i = 0; i < 8; i++){
-            switch(i){
-                case 0:
-                    s = up();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 1:
-                    s = right();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 2:
-                    s = down();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 3:
-                    s = left();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 4:
-                    s = upLeft();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 5:
-                    s = upRight();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 6:
-                    s = downRight();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
-                case 7:
-                    s = downLeft();
-                    if(s == null)
-                        break;
-                    else
-                        return s;
+    public State checkAllDirections(boolean[] canMove){
+        boolean defCantMove = true;
+        for(int i = 0; i < canMove.length; i++)
+            if(canMove[i])
+                defCantMove = false;
+        if(defCantMove)
+            return null;
+        
+        State s = null;
+        for(int i = 0; i < canMove.length; i++){
+            if(canMove[i]){
+                switch(i){
+                    case 0:
+                        s = up();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 1:
+                        s = right();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 2:
+                        s = down();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 3:
+                        s = left();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 4:
+                        s = upLeft();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 5:
+                        s = upRight();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 6:
+                        s = downRight();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                    case 7:
+                        s = downLeft();
+                        if(s == null)
+                            break;
+                        else
+                            return s;
+                } 
             }
         }
         return null;
@@ -152,11 +195,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -175,11 +214,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -198,11 +233,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -221,11 +252,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -248,11 +275,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -275,11 +298,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -302,11 +321,7 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
@@ -329,13 +344,17 @@ public class RandomShot {
         }
         
         if(shots.size() > 0){
-            int rand = r.nextInt(shots.size());
-            Position randPos = shots.get(rand);
-            State s = state;
-            s.setValue(randPos, -1);
-            return s;
+            return getShot(shots);
         }else {
             return null;
         }
+    }
+    
+    public State getShot(ArrayList<Position> shots){
+        int rand = r.nextInt(shots.size());
+        Position randPos = shots.get(rand);
+        State s = state;
+        s.setValue(randPos, -1);
+        return s;
     }
 }

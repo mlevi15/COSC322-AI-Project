@@ -56,7 +56,7 @@ public class COSC322Test{
                         {0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0}};
-        State s = new State(1, 1, test);
+        State s = new State(1, 2, test);
         long st = System.currentTimeMillis();
         Solace solace = new Solace(s);
         solace.think();

@@ -20,11 +20,11 @@ public class RandomMove {
         this.ranState = getRandomMove();
     }
     
-    public State getRandomMove(){
+    private State getRandomMove(){
         int count = 0;
         State s = null;
         
-        boolean[] canMove = {true, true, true, true, true, true, true, true}; //if array is all false, there is no possible shot
+        boolean[] canMove = {true, true, true, true, true, true, true, true}; //if array is all false, there is no possible move
         
         while(s == null && count < 8){
             int randDir = r.nextInt(8);
@@ -121,8 +121,7 @@ public class RandomMove {
         if(defCantMove)
             return null;
         
-        
-        State s = state;
+        State s = null;
         for(int i = 0; i < canMove.length; i++){
             if(canMove[i]){
                 switch(i){
@@ -341,20 +340,6 @@ public class RandomMove {
             int rand = r.nextInt(moves.size());
             Position newQueen = moves.get(rand);
             RandomShot shot = new RandomShot(currentQueen, newQueen, this.state);
-            
-            u.print("QUEENS:");
-            Iterator itr1 = this.state.queens.iterator();
-            while(itr1.hasNext())
-                u.print(itr1.next().toString());
-            
-            u.print("MOVES:");
-            Iterator itr = moves.iterator();
-            while(itr.hasNext())
-                u.print(itr.next().toString());
-            u.print("Queens Size: " + this.state.queens.size());
-            u.print("Turn: " + this.state.turn);
-            u.print("Old: " + currentQueen + " New: " + newQueen);
-            u.print(shot.ranState.toString());
             return shot.ranState;
     }
 }

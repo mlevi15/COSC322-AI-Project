@@ -18,14 +18,10 @@ public class State {
     public static final int POS_MARKED_ARROW = -1;
     Utility u = new Utility();
     
-    //Stats of run
-    static int numSims = 0;
-    static int numExp = 0;
-    
     static Random r = new Random();
-    static int numActions = 5;
+    static int numActions = 10;
     static double ep = 1e-6;
-    double sims, wins;
+    int sims = 0, wins = 0;
     
     int player; //the player that we are assigned at the beginning of the game. 1 or 2 for every state in a game
     int turn; //the player who is analysing this board to make a move (1 or 2, black or white)
@@ -37,20 +33,14 @@ public class State {
         this.player = player;
         this.turn = turn;
         this.board = startingState();
-        this.children = null;
         this.queens = getPlayersQueens();
-        this.wins = 0;
-        this.sims = 0;
     }
     
     public State(int player, int turn, int[][] board){
         this.player = player;
         this.turn = turn;
         this.board = board;
-        this.children = null;
         this.queens = getPlayersQueens();
-        this.wins = 0;
-        this.sims = 0;
     }
     
     public State(int player, int turn, BoardGameModel bgm){
@@ -76,49 +66,49 @@ public class State {
         this.player = player;
         this.turn = turn;
         this.board = board;
-        this.children = null;
         this.queens = getPlayersQueens();
-        this.wins = 0;
-        this.sims = 0;
     }
     
     public void selectMove(){
-        State current = this;
         List<State> visited = new LinkedList<State>();
-        visited.add(current);
-        
+        State current = this;
+        visited.add(this);
         while(!current.isTerminal()){
-            current = current.select();
-            u.print("Adding: \n" + current);
-            visited.add(current);
+            if(current.children.size() > 0){
+                current = current.select();
+                visited.add(current);
+            }else
+                current.children = null;
         }
         
         current.expand();
         
-        State selected = current.select();
-        double winOrLoss = simulate(selected);
-        for(State node : visited){
-            node.updateWinsSims(winOrLoss);
-            u.print("Wins: " + current.wins + " Sims " + current.sims);
+        int winOrLoss = 0;
+        if(current.children.size() > 0){
+            State selected = current.select();
+            visited.add(selected);
+            winOrLoss = simulate(selected);
+        }else{
+            winOrLoss = current.checkGoalState();
+        }
+        for(State s : visited){
+            s.updateWinsSims(winOrLoss);
+            //u.print("Wins: " + s.wins + " Sims " + s.sims);
         }
     }
     
     public State select(){
         State selected = null;
         double best = Double.MIN_VALUE;
-        
         Iterator itr = this.children.iterator();
-        State child;
         while(itr.hasNext()){
-            child = (State)itr.next();
+            State child = (State)itr.next();
             double upperConfidence = child.wins / (child.sims + ep) + Math.sqrt(Math.log(sims + 1) / (child.sims + ep)) + r.nextDouble() * ep;
             if (upperConfidence > best){
                 selected = child;
                 best = upperConfidence;
             }
-            
         }
-        u.print("Returning: \n" + selected);
         return selected;
     }
     
@@ -127,21 +117,15 @@ public class State {
     }
     
     public void expand(){
-        numExp++;
-        u.print("EXPAND");
-        u.print("================================================");
         this.children = new ArrayList<State>();
-        
         for(int i = 0; i < numActions; i++){
             State child = this.getRandomChild();
-            u.print(child.toString());
-            children.add(child);
+            if(child != null)
+                this.children.add(child);
         }
-        u.print("================================================");
-        u.print("END EXPAND \n");
     }
     
-    public void updateWinsSims(double winOrLoss){
+    public void updateWinsSims(int winOrLoss){
         this.sims++;
         if(winOrLoss == 1){
             this.wins++;
@@ -149,25 +133,20 @@ public class State {
     }
     
     public int simulate(State state){
-        this.numSims++;
-        u.print("SIMULATION");
-        u.print("================================================");
         State curr = state;
-        curr.children = new ArrayList<State>();
         State child = curr.getRandomChild();
         
         while(child != null){
+            curr.children = new ArrayList<State>();
             curr.children.add(child);
             curr = child;
-            curr.children = new ArrayList<State>();
             child = curr.getRandomChild();
         }
-        int status = this.checkGoalState();
-        
-        u.print("================================================");
-        u.print("END SIMULATION \n");
-        
-        return status;
+        return curr.checkGoalState();
+    }
+    
+    public int arity() {
+        return children == null ? 0 : children.size();
     }
     
     public State getRandomChild(){
@@ -176,7 +155,7 @@ public class State {
             nextTurn = 2;
         else
             nextTurn = 1;
-        
+            
         State currState = new State(this.player, nextTurn, u.copyBoard(this.board));
         
         int count = 0;
@@ -233,7 +212,7 @@ public class State {
             return null;
         for(int i = 0; i < this.queens.size(); i++){
             if(canMove[i]){
-                s = new RandomMove(currState, this.queens.get(i)).getRandomMove();
+                s = new RandomMove(currState, currState.queens.get(i)).ranState;
                 if(s != null)
                     return s;
             }
@@ -278,13 +257,13 @@ public class State {
                 canWhiteMove = true;
         }
         
-        if(player == 1 && !canWhiteMove)
+        if(this.player == 1 && !canWhiteMove)
             return 1;
-        else if(player == 2 && !canBlackMove)
+        else if(this.player == 2 && !canBlackMove)
             return 1;
-        else if(player == 1 && !canBlackMove)
+        else if(this.player == 1 && !canBlackMove)
             return 0;
-        else if(player == 2 && !canWhiteMove)
+        else if(this.player == 2 && !canWhiteMove)
             return 0;
         else
             return -1;
@@ -378,15 +357,6 @@ public class State {
             neigh.add(botLeft);
             neigh.add(left);
         }
-        
-        /**FOR TESTING PURPOSES-------------------------------------------------------------------------------------------------
-            String s = "Player: " + p.toString() + " || Neighbors: " + neigh.toString() + " || Values: ";
-            Iterator it = neigh.iterator();
-            while(it.hasNext())
-                s += this.getValue((Position)it.next()) + ", ";
-            u.print(s); 
-        -----------------------------------------------------------------------------------------------------------------------**/
-        
         return neigh;
     }
     

@@ -26,23 +26,21 @@ public class Solace {
     }
     
     public void think(){
-        List<State> list = new LinkedList<State>();
-        list.add(null);
+        long s = System.currentTimeMillis();
         
-//        int n = 10;
+//        int n = 100;
 //        for(int i = 0; i < n; i++){
 //            root.selectMove();
 //        }
-        long s = System.currentTimeMillis();
-        while((System.currentTimeMillis() - s) < 25 * 1000){
+
+        while((System.currentTimeMillis() - s) < 28 * 1000){
             root.selectMove();
         }
+
+        StateView sv = new StateView(root);
+        sv.showTree("After play outs");
         
-            
         u.print("Time: " + (System.currentTimeMillis() - s) + " milliseconds");
-        u.print("Total Simulations: " + root.numSims);
-        u.print("Expanded to level: " + root.numExp);
-        //write code to pick the most favorable child
     }
 }
 
