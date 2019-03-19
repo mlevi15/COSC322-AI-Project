@@ -22,42 +22,178 @@ import ygraphs.ai.smart_fox.games.GameModel;
 import ygraphs.ai.smart_fox.games.GamePlayer;
 
 /**
- * @author Kevin
+ * @author Kevin & Levi
  */
 public class Amazons extends GamePlayer{
+    private Solace solace;
+    private State state;
     private GameClient gameClient;   
     private JFrame guiFrame = null;    
-    private GameBoard board = null;  
+    private GameBoard board = null;
+    private int[][] ourBoard;
     public String userName = null;
+    static Utility u = new Utility();
+    int turnCount = 0;
+    String ourPlayer = "";
+    String enemyPlayer = "";
     
+   
+    public static void main(String[] args) { 
+        Amazons game = new Amazons("Levi", "cosc322");
+    }
+    
+    /*
+    * Constructor
+    * @param userName
+    * @param passwd
+    */
     public Amazons(String userName, String passwd){
         this.userName = userName;		       	    
         this.gameClient = new GameClient(userName, passwd, this);
         setupGUI();      
     }
     
+    /*
+     * Implements the abstract method as defined in GamePlayer in the API. Once
+     * a user joins a room, all of the game-related messages from the server will be forwarded
+     * to this method by the GameClient. 
+     *
+     * For a detailed description of the message types and format, 
+     * see the method GamePlayer.handleGameMessage() in the game-client-api document. 
+     * 
+     * @param messageType - the type of message
+     * @param msgDetails - a HashMap with info and data about a game action
+     */
     @Override
     public boolean handleGameMessage(String messageType, Map<String, Object> msgDetails) {
-	//This method will be called by the GameClient when it receives a game-related message
-	//from the server.
 	
-	//For a detailed description of the message types and format, 
-	//see the method GamePlayer.handleGameMessage() in the game-client-api document. 
+        if(messageType.equals(GameMessage.GAME_ACTION_START)){
+            //assuming black goes first as stated by Dr. Gao
+            if(((String)msgDetails.get("PLAYER_BLACK")).equals(this.userName())){
+                //we take the first turn
+                u.print("Game State: " + msgDetails.get("PLAYER_BLACK"));
+                ourPlayer = "Black Player: " + this.userName();
+                enemyPlayer = "White Player: " + msgDetails.get("PLAYER_WHITE");
+                
+                turnCount++;
+                
+                guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
+                
+                state = new State();
+                solace = new Solace(state);
+                
+                u.print("Initial Board");
+                u.print(state.toString());
+                
+                solace.think();
+                
+                Position currentQueen = solace.oldqueenposition;
+                Position ourQueenMove = solace.newqueenposition;
+                Position ourArrowMove = solace.newarrowposition;
+
+                u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
+                u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
+                
+                board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
+                
+                gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
+                
+            }else{
+                //enemy goes first we wait for now and handleOpponentMove when the server sends it to us
+                ourPlayer = "White Player: " + this.userName();
+                enemyPlayer = "Black Player: " + msgDetails.get("PLAYER_BLACK");
+                state = new State();
+                solace = new Solace(state);
+            }
+            
+        }else if(messageType.equals(GameMessage.GAME_ACTION_MOVE)){
+            handleOpponentMove(msgDetails);
+        }
+        
 	return true;
     }
     
+    //handles the event when an opponent makes a move
     private void handleOpponentMove(Map<String, Object> msgDetails){
-	System.out.println("OpponentMove(): " + msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR));
+                
+        //ENEMY TURN
+        turnCount++;
+        
+        guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
+
+	u.print("Opponent's Queen Move: " + msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR));
+        u.print("Opponent's Arrow Move: " + msgDetails.get(AmazonsGameMessage.ARROW_POS));
+        
 	ArrayList<Integer> qcurr = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
 	ArrayList<Integer> qnew = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.Queen_POS_NEXT);
 	ArrayList<Integer> arrow = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.ARROW_POS);
-	System.out.println("QCurr: " + qcurr);
-	System.out.println("QNew: " + qnew);
-	System.out.println("Arrow: " + arrow);
+        
+	//System.out.println("QCurr: " + qcurr);
+	//System.out.println("QNew: " + qnew);
+	//System.out.println("Arrow: " + arrow);
 
-	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);		
+	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);	
+        
+        //TO-DO: add code to handle enemy move in our search tree
+        
+        //check to see if we are at a goal state
+        if(((String)msgDetails.get("PLAYER_WHITE")).equals(this.userName())){
+            if(state.checkGoalState(2) == 1){
+                u.print("The Game is Over - We Win!!!");
+            }else if(state.checkGoalState(2) == -1){
+                u.print("The Game is Over - We Lose...");
+            }
+        }else if(((String)msgDetails.get("PLAYER_BLACK")).equals(this.userName())){
+            if(state.checkGoalState(1) == 1){
+                u.print("The Game is Over - We Win!!!");
+            }else if(state.checkGoalState(1) == -1){
+                u.print("The Game is Over - We Lose...");
+            }
+        }
+        
+        //OUR TURN
+        turnCount++;
+        
+        guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
+        
+        solace.think();
+        
+        Position currentQueen = solace.oldqueenposition;
+        Position ourQueenMove = solace.newqueenposition;
+        Position ourArrowMove = solace.newarrowposition;
+
+        u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
+        u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
+
+        board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
+
+        gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
+
+        //check to see if we are at a goal state
+        if(((String)msgDetails.get("PLAYER_WHITE")).equals(this.userName())){
+            if(state.checkGoalState(2) == 1){
+                u.print("The Game is Over - We Win!!!");
+            }else if(state.checkGoalState(2) == -1){
+                u.print("The Game is Over - We Lose...");
+            }
+        }else if(((String)msgDetails.get("PLAYER_BLACK")).equals(this.userName())){
+            if(state.checkGoalState(1) == 1){
+                u.print("The Game is Over - We Win!!!");
+            }else if(state.checkGoalState(1) == -1){
+                u.print("The Game is Over - We Lose...");
+            }
+        }
     }
     
+    /*
+     * handle a move made by this player and send the info to the server.
+     * @param x queen row index 
+     * @param y queen col index
+     * @param arow arrow row index
+     * @param acol arrow col index
+     * @param qfr queen original row
+     * @param qfc queen original col
+     */
     public void playerMove(int x, int y, int arow, int acol, int qfr, int qfc){		
 		 
 	int[] qf = new int[2];
@@ -75,8 +211,12 @@ public class Amazons extends GamePlayer{
         java.util.Timer timer = new java.util.Timer();
         MyTimer timee = new MyTimer(this.gameClient, qf, qn, ar);
         timer.schedule(timee, 10000);
+        
     }
-    
+    /*
+    * Implements the abstract method defined in GamePlayer. Will be invoked by the GameClient
+    * when the server says the login is successful
+    */
     @Override
     public void onLogin() {
         ArrayList<String> roomList = this.gameClient.getRoomList();
@@ -91,7 +231,7 @@ public class Amazons extends GamePlayer{
         guiFrame = new JFrame();
 
         guiFrame.setSize(800, 600);
-        guiFrame.setTitle("Game of the Amazons (COSC 322, )" + this.userName());	
+        guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);	
 
         guiFrame.setLocation(200, 200);
         guiFrame.setVisible(true);
@@ -114,6 +254,20 @@ public class Amazons extends GamePlayer{
     public boolean handleMessage(String msg) {
 	System.out.println("Time Out ------ " + msg); 
 	return true;
+    }
+    
+    /*
+     * combinedMove: creates an int array storing the row, and column of a Queen in order to pass it
+     * to the server
+     * @param row: an int containing a Queen's row position
+     * @param col: an int containing Queen's column position
+     * @return: an int array containing the row, and column of a Queen
+     */
+    public int[] combinedMove(int row, int col) {
+        int[] move = new int[2];
+        move[0] = row;
+        move[1] = col;
+        return move;
     }
     
     @Override
