@@ -1,5 +1,6 @@
 package cosc322;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -25,23 +26,28 @@ State root;
     public void think(){
         double maxratio = 0;
         int node = 0;
-                                    
+        int iterations = 0;
         root.setChildren(root.getPossibleMoves());
+
+        ArrayList<State> children = root.getChildren();
+
         int numchildren = root.getChildren().size();//getting the number of children
-        while(true){
+        while((secondtimer-firsttimer) < 20*1000){
             secondtimer = System.currentTimeMillis();
-            int randomnumber = rand.nextInt(numchildren); //picking a random "node" ebetween 0-(numchildren-1)
-            rootrandomchild = root.getChildren().get(randomnumber);
-            System.out.println(rootrandomchild.toString());
+            iterations +=1;
+            
+            System.out.println(iterations);
+            secondtimer = System.currentTimeMillis();
+            int randomnumber = (int)(Math.random() * numchildren); //picking a random "node" ebetween 0-(numchildren-1)
+            rootrandomchild = children.get(randomnumber);
             rootrandomchild.setParent(null);
             
-            while(rootrandomchild.getPossibleMoves().isEmpty()){
+            while(rootrandomchild.getPossibleMoves().size() != 0){  
                 rootrandomchild.setChildren(rootrandomchild.getPossibleMoves());
                 int nchildren = rootrandomchild.getChildren().size();
-                int rnumber = rand.nextInt(nchildren);
+                int rnumber = (int)(Math.random()*nchildren);
                 randomchild = rootrandomchild.getChildren().get(rnumber);
                 randomchild.setParent(rootrandomchild);
-                System.out.println(randomchild.toString());
 
                 rootrandomchild = randomchild;          
             }
