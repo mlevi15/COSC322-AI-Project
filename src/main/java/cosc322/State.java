@@ -44,7 +44,7 @@ public class State {
     }
     
     public State(int player, int turn, BoardGameModel bgm){
-        int[][] board = new int[n+1][n+1];
+        int[][] board = new int[11][11];
         for(int i = 1; i < 11; i++){
             for(int j = 1; j < 11; j++){
                 switch(bgm.gameBoard[i][j]){
@@ -135,7 +135,6 @@ public class State {
     public int simulate(State state){
         State curr = state;
         State child = curr.getRandomChild();
-        
         while(child != null){
             curr.children = new ArrayList<State>();
             curr.children.add(child);

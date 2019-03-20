@@ -33,10 +33,10 @@ public class Solace {
 //            root.selectMove();
 //        }
 
-        while((System.currentTimeMillis() - s) < 28 * 1000){
+        while((System.currentTimeMillis() - s) < 5 * 1000){
             root.selectMove();
         }
-
+        u.print("Simulations: " + root.sims);
         StateView sv = new StateView(root);
         sv.showTree("After play outs");
         
