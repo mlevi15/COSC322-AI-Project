@@ -12,7 +12,7 @@ import ygraphs.ai.smart_fox.games.GamePlayer;
 
 public class COSC322Test{
     private Amazons amazons;
-    private String userName = null;
+    private String userName = "Solace";
     static Utility u = new Utility();
  
     public static void main(String[] args) {
@@ -37,75 +37,35 @@ public class COSC322Test{
 	//amazons = new Amazons(userName, passwd);
         //testCheckGoalState();
         //testChildGeneration();
-        detectChange();
+        //detectChange();
+        //testSolace();
+        //testGetRandomChild
+        //testGetRandomChild();
         testSolace();
-
     }
-     public void testSolace(){
-         State state = new State();
-         Solace solace = new Solace(state);
-         solace.think();
-     }
-public void detectChange(){
-        int[][] testrandom = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
+    
+    public void testSolace(){
+        int[][] test = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                         {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                         {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, -1, -1,  0,  0,  0,  0,  0,  0, -1, -1},
-                        {0,  2, -1,  0,  0,  0,  0,  0,  0, -1, 2},
-                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                        {0,  0,  0, -1,  2, -1, -1,  2, -1,  0, 0}};
-        int[][] testchange = {{0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, -1, 0,  0,  0,  0,  0,  0,  0, -1, -1},
-                        {0,  2, -1,  0,  0,  0,  0,  0,  0, -1, 2},
-                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                        {0,  0,  0, -1,  2, -1, -1,  2, -1,  0, 0}};
-        
-        Position newarrowposition = null;
-        Position newqueenposition = null;
-        Position oldqueenposition = null;
-        for(int i = 0; i < testrandom.length; i++){
-            for(int j = 0; j < testchange.length; j++){
-                if(testrandom[i][j] != testchange[i][j]){
-                    if(testchange[i][j] == -1){
-                         newarrowposition = new Position(i,j);
-                    }
-                    else if(testchange[i][j] == 1 || testchange[i][j] == 2){
-                         newqueenposition = new Position(i,j);
-                    }   
-                    else if(testrandom[i][j] == 1 || testrandom[i][j] == 2){
-                         oldqueenposition = new Position(i,j);
-                    }  
-                }
-            }
-        }
-        
-        System.out.println(newarrowposition.toString());
-        System.out.println(newqueenposition.toString());
-        System.out.println(oldqueenposition.toString());
-
+                        {0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
+                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                        {0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0}};
+        long st = System.currentTimeMillis();
+        State s = new State(1, 2, test);
+        Solace solace = new Solace(s);
+        solace.think();
+        u.print("Old: " + solace.oldQueen.toString());
+        u.print("New: " + solace.newQueen.toString());
+        u.print("Arrow: " + solace.arrow.toString());
     }
-
-    public void testChildGeneration(){
-//        State state = new State();
-//        ArrayList<State> children = state.getPossibleMoves();
-//        u.print("Total Possible moves at current level: " + children.size());
-//        u.print("Root State: ");
-//        u.print(state.toString());
-//        Iterator itr = children.iterator();
-//        while(itr.hasNext()){
-//            u.print(itr.next().toString());
-//        }
-         
+    
+    public void testGetRandomChild(){
         int[][] test = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
                         {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
@@ -118,39 +78,25 @@ public void detectChange(){
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0}};
         
-        int[][] test2 = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, -1, -1,  0,  0,  0,  0,  0,  0, -1, -1},
-                        {0,  2, -1,  0,  0,  0,  0,  0,  0, -1, 2},
-                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-                        {0,  0,  0, -1,  2, -1, -1,  2, -1,  0, 0}};
+        int[][] test2 = {{0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, 
+                        {0,  0,  0, -1,  0, -1, -1,  1, -1,  0,  0}, 
+                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}, 
+                        {0,  1, -1,  0,  0,  0,  0,  0,  0, -1,  1}, 
+                        {0, -1, -1,  0,  0,  0,  0,  0,  0, -1, -1}, 
+                        {0,  0,  0,  0,  0,  0 , 0,  0,  0,  0,  0},
+                        {0,  0,  0,  0, -1, -1,  0,  0,  0,  0,  0}, 
+                        {0,  0,  0,  0, -1, -1, -1,  0,  0,  0,  0},
+                        {0,  2,  0,  0, -1, -1, -1,  0,  0,  0,  2},
+                        {0, -1, -1,  0,  0,  0,  0,  0,  0,  0,  0},
+                        {0,  1, -1,  0,  2,  0,  0,  2,  0,  0,  0}};
         
-        int[][] test3 = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}, 
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
-                        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-                        {0, 0, -1, 0, 2, 0, 0, 2, 0, 0, 0}};
-        
-        State state = new State(test3, 2);
-        ArrayList<State> children = state.getPossibleMoves();
-        u.print("Total Possible moves at current level: " + children.size());
-        u.print("Root State: ");
-        u.print(state.toString());
-        Iterator itr = children.iterator();
-        while(itr.hasNext()){
-            u.print(itr.next().toString());
-        }
+        State s1 = new State(1, 1, test);
+        u.print("Random Move:");
+        s1 = s1.getRandomChild();
+        if(s1 != null)
+            u.print(s1.toString());
+        else
+            u.print("Terminal");
     }
     
     public void testCheckGoalState(){
@@ -240,31 +186,31 @@ public void detectChange(){
         
         
 
-        State s1= new State(test1, 1);
+        State s1= new State(1, 2, test1);
         u.print(s1.toString());
         u.print("Goal State: " + s1.checkGoalState(1) + "\n");
         
-        State s2 = new State(test2, 1);
+        State s2 = new State(1, 2, test2);
         u.print(s2.toString());
         u.print("Goal State: " + s2.checkGoalState(1) + "\n");
         
-        State s3 = new State(test3, 1);
+        State s3 = new State(1, 2, test3);
         u.print(s3.toString());
         u.print("Goal State: " + s3.checkGoalState(1) + "\n");
         
-        State s4 = new State(test4, 1);
+        State s4 = new State(1, 2, test4);
         u.print(s4.toString());
         u.print("Goal State: " + s4.checkGoalState(1) + "\n");
         
-        State s5 = new State(test5, 1);
+        State s5 = new State(1, 2, test5);
         u.print(s5.toString());
         u.print("Goal State: " + s5.checkGoalState(1) + "\n");
         
-        State s6 = new State(test6, 1);
+        State s6 = new State(1, 2, test6);
         u.print(s6.toString());
         u.print("Goal State: " + s6.checkGoalState(1) + "\n");
         
-        State s7 = new State(test7, 1);
+        State s7 = new State(1, 2, test7);
         u.print(s7.toString());
         u.print("Goal State: " + s7.checkGoalState(1) + "\n");
     }

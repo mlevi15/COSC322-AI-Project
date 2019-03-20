@@ -1,5 +1,9 @@
 package cosc322;
 
+import static cosc322.COSC322Test.u;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -8,88 +12,76 @@ import java.util.Random;
  * Solace AI object (Our artificial intelligence) 
  */
 public class Solace {
+
+    Utility u = new Utility();
     
-State root;
-    long firsttimer = System.currentTimeMillis();
-    long secondtimer = System.currentTimeMillis();
-    Random rand = new Random(); 
-    State rootrandomchild;
-    State randomchild;
-    Position newarrowposition = null;
-    Position newqueenposition = null;
-    Position oldqueenposition = null;
+    int player;
+    int turn;
+    State root;
+    Position arrow;
+    Position newQueen;
+    Position oldQueen;
+    
     public Solace(State root){
+        this.turn = root.turn;
+        this.player = root.player;
         this.root = root;
-    }
-
-    public void think(){
-        double maxratio = 0;
-        int node = 0;
-                                    
-        root.setChildren(root.getPossibleMoves());
-        int numchildren = root.getChildren().size();//getting the number of children
-        while(true){
-            secondtimer = System.currentTimeMillis();
-            int randomnumber = rand.nextInt(numchildren); //picking a random "node" ebetween 0-(numchildren-1)
-            rootrandomchild = root.getChildren().get(randomnumber);
-            System.out.println(rootrandomchild.toString());
-            rootrandomchild.setParent(null);
-            
-            while(rootrandomchild.getPossibleMoves().isEmpty()){
-                rootrandomchild.setChildren(rootrandomchild.getPossibleMoves());
-                int nchildren = rootrandomchild.getChildren().size();
-                int rnumber = rand.nextInt(nchildren);
-                randomchild = rootrandomchild.getChildren().get(rnumber);
-                randomchild.setParent(rootrandomchild);
-                System.out.println(randomchild.toString());
-
-                rootrandomchild = randomchild;          
-            }
-            
-            if(rootrandomchild.checkGoalState(1) == 1){
-                rootrandomchild.setWins(rootrandomchild.getWins() + 1);
-                rootrandomchild.setSims(rootrandomchild.getSims() + 1);
-            }
-            
-            else {
-                rootrandomchild.setSims(rootrandomchild.getSims() + 1);
-            }
-            
-            while(rootrandomchild.getParent() != null){
-                rootrandomchild.getParent().setWins(rootrandomchild.getWins());
-                rootrandomchild.getParent().setSims(rootrandomchild.getSims());
-                rootrandomchild = rootrandomchild.getParent();
-            }    
-        }
-//        for(int i = 0; i < numchildren; i++){
-//            double wins = root.getChildren().get(i).getWins();
-//            double sims = root.getChildren().get(i).getSims();
-//            if(maxratio < (wins/sims)){
-//                maxratio = (wins/sims);
-//                node = i;
-//            }
-//        }
-//        int originalboard[][] = root.getBoard();
-//        int newboard[][] = rootrandomchild.getBoard();
-//        for(int i = 0; i < originalboard.length; i++){
-//            for(int j = 0; j < newboard.length; j++){
-//                if(originalboard[i][j] != newboard[i][j]){
-//                    if(newboard[i][j] == -1){
-//                        newarrowposition = new Position(i,j);
-//                    }
-//                    else if(newboard[i][j] == 1 || newboard[i][j] == 2){
-//                        newqueenposition = new Position(i,j);
-//                    }   
-//                    else if(originalboard[i][j] == 1 || originalboard[i][j] == 2){
-//                        oldqueenposition = new Position(i,j);
-//                    }  
-//                }
-//            }
-//        }
-        
         
     }
-
     
+    public void think(){
+        long s = System.currentTimeMillis();
+
+//        for(int i = 0; i < 3; i++){
+//            root.selectMove();
+//        }
+        
+        while((System.currentTimeMillis() - s) < 25 * 1000){
+            root.selectMove();
+        }
+        
+        double maxRatio = 0;
+        State move = null;
+        Iterator moveItr = root.children.iterator();
+        while(moveItr.hasNext()){
+            State state = (State)moveItr.next();
+            u.print(state.toString());
+            double ratio = (double)state.wins / (double)state.sims;
+            if(ratio > maxRatio){
+                maxRatio = ratio;
+                move = state;
+            }
+        }
+        u.print("============================================");
+        u.print("Max Ratio: " + maxRatio);
+        u.print("Wins: " + move.wins + " Sims " + move.sims);
+        u.print(move.toString());
+        u.print("============================================");
+        
+        this.setMove(this.root.board, move.board);
+        
+        u.print("Time: " + (System.currentTimeMillis() - s) + " milliseconds");
+        u.print("Simulations: " + root.sims);
+        StateView sv = new StateView(root);
+        sv.showTree("After play outs");
+    }
+    
+    public void setMove(int[][] root, int[][] move){
+        for(int i = 0; i < root.length; i++){
+            for(int j = 0; j < move.length; j++){
+                if(root[i][j] != move[i][j]){
+                    if(move[i][j] == -1){
+                         this.arrow = new Position(i,j);
+                    }
+                    else if(move[i][j] == 1 || move[i][j] == 2){
+                         this.newQueen = new Position(i,j);
+                    }   
+                    else if(root[i][j] == 1 || root[i][j] == 2){
+                         this.oldQueen = new Position(i,j);
+                    }  
+                }
+            }
+        }
+    }
 }
 
