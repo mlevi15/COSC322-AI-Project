@@ -25,7 +25,6 @@ import ygraphs.ai.smart_fox.games.GamePlayer;
  * @author Kevin & Levi
  */
 public class Amazons extends GamePlayer{
-    private Solace solace;
     private State state;
     private GameClient gameClient;   
     private JFrame guiFrame = null;    
@@ -34,6 +33,7 @@ public class Amazons extends GamePlayer{
     public String userName = null;
     static Utility u = new Utility();
     int turnCount = 0;
+    int player = 0;
     String ourPlayer = "";
     String enemyPlayer = "";
     
@@ -74,22 +74,23 @@ public class Amazons extends GamePlayer{
                 u.print("Game State: " + msgDetails.get("PLAYER_BLACK"));
                 ourPlayer = "Black Player: " + this.userName();
                 enemyPlayer = "White Player: " + msgDetails.get("PLAYER_WHITE");
+                player = 1;
                 
                 turnCount++;
                 
                 guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
                 
-                state = new State();
-                solace = new Solace(state);
+                state = new State(player, 2);
+                Solace solace = new Solace(state);
                 
                 u.print("Initial Board");
                 u.print(state.toString());
                 
                 solace.think();
                 
-                Position currentQueen = solace.oldqueenposition;
-                Position ourQueenMove = solace.newqueenposition;
-                Position ourArrowMove = solace.newarrowposition;
+                Position currentQueen = solace.oldQueen;
+                Position ourQueenMove = solace.newQueen;
+                Position ourArrowMove = solace.arrow;
 
                 u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
                 u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
@@ -102,8 +103,7 @@ public class Amazons extends GamePlayer{
                 //enemy goes first we wait for now and handleOpponentMove when the server sends it to us
                 ourPlayer = "White Player: " + this.userName();
                 enemyPlayer = "Black Player: " + msgDetails.get("PLAYER_BLACK");
-                state = new State();
-                solace = new Solace(state);
+                player  = 2;
             }
             
         }else if(messageType.equals(GameMessage.GAME_ACTION_MOVE)){
@@ -134,33 +134,31 @@ public class Amazons extends GamePlayer{
 
 	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);	
         
+        State opponentState = new State(player, 2, this.board.gameModel);
+        
         //TO-DO: add code to handle enemy move in our search tree
         
         //check to see if we are at a goal state
-        if(((String)msgDetails.get("PLAYER_WHITE")).equals(this.userName())){
-            if(state.checkGoalState(2) == 1){
-                u.print("The Game is Over - We Win!!!");
-            }else if(state.checkGoalState(2) == -1){
-                u.print("The Game is Over - We Lose...");
-            }
-        }else if(((String)msgDetails.get("PLAYER_BLACK")).equals(this.userName())){
-            if(state.checkGoalState(1) == 1){
-                u.print("The Game is Over - We Win!!!");
-            }else if(state.checkGoalState(1) == -1){
-                u.print("The Game is Over - We Lose...");
-            }
+        
+        if(opponentState.checkGoalState() == 1){
+            u.print("The Game is Over - We Win!!!");
+        }else if(opponentState.checkGoalState() == 0){
+            u.print("The Game is Over - We Lose...");
         }
+         
         
         //OUR TURN
         turnCount++;
         
         guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
         
+        Solace solace = new Solace(opponentState);
+        
         solace.think();
         
-        Position currentQueen = solace.oldqueenposition;
-        Position ourQueenMove = solace.newqueenposition;
-        Position ourArrowMove = solace.newarrowposition;
+        Position currentQueen = solace.oldQueen;
+        Position ourQueenMove = solace.newQueen;
+        Position ourArrowMove = solace.arrow;
 
         u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
         u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
@@ -170,18 +168,10 @@ public class Amazons extends GamePlayer{
         gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
 
         //check to see if we are at a goal state
-        if(((String)msgDetails.get("PLAYER_WHITE")).equals(this.userName())){
-            if(state.checkGoalState(2) == 1){
-                u.print("The Game is Over - We Win!!!");
-            }else if(state.checkGoalState(2) == -1){
-                u.print("The Game is Over - We Lose...");
-            }
-        }else if(((String)msgDetails.get("PLAYER_BLACK")).equals(this.userName())){
-            if(state.checkGoalState(1) == 1){
-                u.print("The Game is Over - We Win!!!");
-            }else if(state.checkGoalState(1) == -1){
-                u.print("The Game is Over - We Lose...");
-            }
+        if(opponentState.checkGoalState() == 1){
+            u.print("The Game is Over - We Win!!!");
+        }else if(opponentState.checkGoalState() == 0){
+            u.print("The Game is Over - We Lose...");
         }
     }
     
@@ -220,10 +210,11 @@ public class Amazons extends GamePlayer{
     @Override
     public void onLogin() {
         ArrayList<String> roomList = this.gameClient.getRoomList();
+        String room = roomList.get(2);
         System.out.println("Available rooms are: " + roomList.toString());
-        System.out.println("Joining room: " + roomList.get(0) + "...");
-        this.gameClient.joinRoom(roomList.get(0));
-        System.out.println(roomList.get(0) + " successfully joined.");
+        System.out.println("Joining room: " + room + "...");
+        this.gameClient.joinRoom(room);
+        System.out.println(room + " successfully joined.");
         System.out.println("Let the games begin.");
     }
     

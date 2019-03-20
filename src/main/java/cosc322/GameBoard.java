@@ -46,7 +46,7 @@ public class GameBoard extends JPanel{
 
 
         Amazons game = null; 
-    private BoardGameModel gameModel = null;
+        public BoardGameModel gameModel = null;
 
         boolean playerAMove;
 

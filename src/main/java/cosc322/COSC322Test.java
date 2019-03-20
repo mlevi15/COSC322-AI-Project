@@ -56,13 +56,26 @@ public class COSC322Test{
                         {0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0}};
+        
+        int[][] test2 = {{0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0}, 
+                        {0,  -1,  0, -1,  0, -1, -1,  1, -1,  0,  0}, 
+                        {0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}, 
+                        {0,  1, -1,  0,  0,  0,  0,  -1,  0, -1,  1}, 
+                        {0, -1, -1,  -1,  0,  0,  -1,  0,  0, 0, -1}, 
+                        {0,  -1,  0,  0,  0,  0 , 0,  -1,  0,  0,  0},
+                        {0,  0,  0,  0, -1, -1,  0,  0,  0,  0,  -1}, 
+                        {0,  0, -1,  0, -1, -1, -1,  0,  -1,  0,  0},
+                        {0,  2,  0,  0, -1, -1, -1,  -1,  0,  0,  2},
+                        {0, -1, 0,  0,  0,  -1,  -1,  0,  0,  -1,  0},
+                        {0,  1, -1,  0,  2,  0,  0,  2,  -1,  0,  0}};
+        
         long st = System.currentTimeMillis();
-        State s = new State(1, 2, test);
+        State s = new State(1, 2, test2);
         Solace solace = new Solace(s);
         solace.think();
         u.print("Old: " + solace.oldQueen.toString());
         u.print("New: " + solace.newQueen.toString());
-        u.print("Arrow: " + solace.arrow.toString());
+        u.print("Arrw: " + solace.arrow.toString());
     }
     
     public void testGetRandomChild(){
