@@ -19,7 +19,7 @@ public class State {
     Utility u = new Utility();
     
     static Random r = new Random();
-    static int numActions = 250;
+    static int numActions = 300;
     static double ep = 1e-6;
     int sims = 0, wins = 0;
     
@@ -28,6 +28,7 @@ public class State {
     int[][] board; //the state object at its core is a 2D array that holds all game data
     ArrayList<State> children;
     ArrayList<Position> queens;
+    Move move;
     
     public State(int player, int turn){
         this.player = player;
@@ -224,8 +225,8 @@ public class State {
     
     public static int[][] startingState(){
         int[][] state = new int[11][11];
-        for(int i = 1; i < 11 + 1; i++){
-            for(int j = 1; j < 11 + 1; j++){
+        for(int i = 1; i < 11; i++){
+            for(int j = 1; j < 11; j++){
                 state[i][j] = POS_AVAILABLE;
             }
         }

@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Levi", "cosc322");
+        Amazons game = new Amazons("Kevin", "cosc322");
     }
     
     /*
@@ -69,11 +69,11 @@ public class Amazons extends GamePlayer{
 	
         if(messageType.equals(GameMessage.GAME_ACTION_START)){
             //assuming black goes first as stated by Dr. Gao
-            if(((String)msgDetails.get("PLAYER_BLACK")).equals(this.userName())){
+            if(((String)msgDetails.get("player-black")).equals(this.userName())){
                 //we take the first turn
-                u.print("Game State: " + msgDetails.get("PLAYER_BLACK"));
+                u.print("Game State: " + msgDetails.get("player-black"));
                 ourPlayer = "Black Player: " + this.userName();
-                enemyPlayer = "White Player: " + msgDetails.get("PLAYER_WHITE");
+                enemyPlayer = "White Player: " + msgDetails.get("player-white");
                 player = 1;
                 
                 turnCount++;
@@ -101,8 +101,10 @@ public class Amazons extends GamePlayer{
                 
             }else{
                 //enemy goes first we wait for now and handleOpponentMove when the server sends it to us
+                turnCount++;
                 ourPlayer = "White Player: " + this.userName();
-                enemyPlayer = "Black Player: " + msgDetails.get("PLAYER_BLACK");
+                enemyPlayer = "Black Player: " + msgDetails.get("player-black");
+                guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-black") + " | " + ourPlayer + " | " + enemyPlayer);
                 player  = 2;
             }
             
@@ -134,7 +136,14 @@ public class Amazons extends GamePlayer{
 
 	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);	
         
-        State opponentState = new State(player, 2, this.board.gameModel);
+        int turn = 0;
+        if(player == 1){
+            turn = 2;
+        }else{
+            turn = 1;
+        }
+        
+        State opponentState = new State(player, turn, this.board.gameModel);
         
         //TO-DO: add code to handle enemy move in our search tree
         
@@ -160,9 +169,10 @@ public class Amazons extends GamePlayer{
         Position ourQueenMove = solace.newQueen;
         Position ourArrowMove = solace.arrow;
 
+        u.print("Current Queen Position: [" + currentQueen.i + ", " + currentQueen.j + "]");
         u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
         u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
-
+        
         board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
 
         gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
@@ -210,7 +220,7 @@ public class Amazons extends GamePlayer{
     @Override
     public void onLogin() {
         ArrayList<String> roomList = this.gameClient.getRoomList();
-        String room = roomList.get(2);
+        String room = roomList.get(1);
         System.out.println("Available rooms are: " + roomList.toString());
         System.out.println("Joining room: " + room + "...");
         this.gameClient.joinRoom(room);

@@ -45,7 +45,6 @@ public class Solace {
         Iterator moveItr = root.children.iterator();
         while(moveItr.hasNext()){
             State state = (State)moveItr.next();
-            u.print(state.toString());
             double ratio = (double)state.wins / (double)state.sims;
             if(ratio > maxRatio){
                 maxRatio = ratio;
@@ -58,12 +57,16 @@ public class Solace {
         u.print(move.toString());
         u.print("============================================");
         
-        this.setMove(this.root.board, move.board);
+//        this.setMove(this.root.board, move.board);
+
+        this.oldQueen = move.move.oldQueen;
+        this.newQueen = move.move.newQueen;
+        this.arrow = move.move.arrow;
         
         u.print("Time: " + (System.currentTimeMillis() - s) + " milliseconds");
         u.print("Simulations: " + root.sims);
-        StateView sv = new StateView(root);
-        sv.showTree("After play outs");
+//        StateView sv = new StateView(root);
+//        sv.showTree("After play outs");
     }
     
     public void setMove(int[][] root, int[][] move){
