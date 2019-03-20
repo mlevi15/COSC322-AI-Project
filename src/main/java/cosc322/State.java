@@ -19,7 +19,7 @@ public class State {
     Utility u = new Utility();
     
     static Random r = new Random();
-    static int numActions = 10;
+    static int numActions = 250;
     static double ep = 1e-6;
     int sims = 0, wins = 0;
     
@@ -141,7 +141,10 @@ public class State {
             curr = child;
             child = curr.getRandomChild();
         }
-        return curr.checkGoalState();
+        int goal = curr.checkGoalState();
+//        u.print(curr.toString());
+//        u.print(goal);
+        return goal;
     }
     
     public int arity() {

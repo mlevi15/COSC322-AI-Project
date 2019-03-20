@@ -56,11 +56,13 @@ public class COSC322Test{
                         {0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0}};
-        State s = new State(1, 2, test);
         long st = System.currentTimeMillis();
+        State s = new State(1, 2, test);
         Solace solace = new Solace(s);
         solace.think();
-        u.print("Time: " + (System.currentTimeMillis() - st) + " milliseconds");
+        u.print("Old: " + solace.oldQueen.toString());
+        u.print("New: " + solace.newQueen.toString());
+        u.print("Arrow: " + solace.arrow.toString());
     }
     
     public void testGetRandomChild(){
