@@ -69,7 +69,7 @@ class BoardGameModel extends GameModel {
 			gameBoard[arow][acol] = BoardGameModel.POS_MARKED_ARROW;
 		}
 		
-		System.out.println(this.toString());
+		//System.out.println(this.toString());
 		
 		return valid;
 	}	

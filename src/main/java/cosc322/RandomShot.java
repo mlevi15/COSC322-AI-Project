@@ -10,10 +10,12 @@ public class RandomShot {
     Random r = new Random();
     
     State state;
+    Position oldQueen;
     Position currentQueen;
     State ranState;
 
     public RandomShot(Position oldQueenPos, Position newQueenPos, State state){
+        this.oldQueen = oldQueenPos;
         this.currentQueen = newQueenPos;
         state.setValue(oldQueenPos, 0);
         state.setValue(newQueenPos, state.turn);
@@ -355,6 +357,7 @@ public class RandomShot {
         Position randPos = shots.get(rand);
         State s = state;
         s.setValue(randPos, -1);
+        s.move = new Move(oldQueen, currentQueen, randPos);
         return s;
     }
 }
