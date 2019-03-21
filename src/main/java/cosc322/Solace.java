@@ -36,7 +36,7 @@ public class Solace {
 //            root.selectMove();
 //        }
         
-        while((System.currentTimeMillis() - s) < 10 * 1000){
+        while((System.currentTimeMillis() - s) < 20 * 1000){
             root.selectMove();
         }
         
@@ -56,8 +56,6 @@ public class Solace {
         u.print("Wins: " + move.wins + " Sims " + move.sims);
         u.print(move.toString());
         u.print("============================================");
-        
-//        this.setMove(this.root.board, move.board);
 
         this.oldQueen = move.move.oldQueen;
         this.newQueen = move.move.newQueen;
@@ -67,24 +65,6 @@ public class Solace {
         u.print("Simulations: " + root.sims);
 //        StateView sv = new StateView(root);
 //        sv.showTree("After play outs");
-    }
-    
-    public void setMove(int[][] root, int[][] move){
-        for(int i = 0; i < root.length; i++){
-            for(int j = 0; j < move.length; j++){
-                if(root[i][j] != move[i][j]){
-                    if(move[i][j] == -1){
-                         this.arrow = new Position(i,j);
-                    }
-                    else if(move[i][j] == 1 || move[i][j] == 2){
-                         this.newQueen = new Position(i,j);
-                    }   
-                    else if(root[i][j] == 1 || root[i][j] == 2){
-                         this.oldQueen = new Position(i,j);
-                    }  
-                }
-            }
-        }
     }
 }
 

@@ -220,7 +220,7 @@ public class Amazons extends GamePlayer{
     @Override
     public void onLogin() {
         ArrayList<String> roomList = this.gameClient.getRoomList();
-        String room = roomList.get(1);
+        String room = roomList.get(3);
         System.out.println("Available rooms are: " + roomList.toString());
         System.out.println("Joining room: " + room + "...");
         this.gameClient.joinRoom(room);
