@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Kevin", "cosc322");
+        Amazons game = new Amazons("Levi", "cosc322");
     }
     
     /*
@@ -95,7 +95,7 @@ public class Amazons extends GamePlayer{
                 u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
                 u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
                 
-                board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
+                board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, true);
                 
                 gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
                 
@@ -121,8 +121,12 @@ public class Amazons extends GamePlayer{
         //ENEMY TURN
         turnCount++;
         
-        guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
-
+        if(player == 1){
+            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-black") + " | " + ourPlayer + " | " + enemyPlayer);
+        }else{
+            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-white") + " | " + ourPlayer + " | " + enemyPlayer);
+        }
+        
 	u.print("Opponent's Queen Move: " + msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR));
         u.print("Opponent's Arrow Move: " + msgDetails.get(AmazonsGameMessage.ARROW_POS));
         
@@ -134,7 +138,7 @@ public class Amazons extends GamePlayer{
 	//System.out.println("QNew: " + qnew);
 	//System.out.println("Arrow: " + arrow);
 
-	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);	
+	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), false);	
         
         int turn = 0;
         if(player == 1){
@@ -173,7 +177,7 @@ public class Amazons extends GamePlayer{
         u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
         u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
         
-        board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
+        board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, true);
 
         gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
 
