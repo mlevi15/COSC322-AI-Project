@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Levi", "cosc322");
+        Amazons game = new Amazons("Kevin", "cosc322");
     }
     
     /*
@@ -88,14 +88,14 @@ public class Amazons extends GamePlayer{
                 
                 solace.think();
                 
-                Position currentQueen = solace.oldQueen;
-                Position ourQueenMove = solace.newQueen;
-                Position ourArrowMove = solace.arrow;
-
+                Position currentQueen = new Position(invertMove(solace.oldQueen.i), solace.oldQueen.j);
+                Position ourQueenMove = new Position(invertMove(solace.newQueen.i), solace.newQueen.j);
+                Position ourArrowMove = new Position(invertMove(solace.arrow.i), solace.arrow.j);
+                
                 u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
                 u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
                 
-                board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, true);
+                board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
                 
                 gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
                 
@@ -138,7 +138,7 @@ public class Amazons extends GamePlayer{
 	//System.out.println("QNew: " + qnew);
 	//System.out.println("Arrow: " + arrow);
 
-	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), false);	
+	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);	
         
         int turn = 0;
         if(player == 1){
@@ -169,15 +169,15 @@ public class Amazons extends GamePlayer{
         
         solace.think();
         
-        Position currentQueen = solace.oldQueen;
-        Position ourQueenMove = solace.newQueen;
-        Position ourArrowMove = solace.arrow;
+        Position currentQueen = new Position(invertMove(solace.oldQueen.i), solace.oldQueen.j);
+        Position ourQueenMove = new Position(invertMove(solace.newQueen.i), solace.newQueen.j);
+        Position ourArrowMove = new Position(invertMove(solace.arrow.i), solace.arrow.j);
 
         u.print("Current Queen Position: [" + currentQueen.i + ", " + currentQueen.j + "]");
         u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
         u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
         
-        board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, true);
+        board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
 
         gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
 
@@ -224,7 +224,7 @@ public class Amazons extends GamePlayer{
     @Override
     public void onLogin() {
         ArrayList<String> roomList = this.gameClient.getRoomList();
-        String room = roomList.get(3);
+        String room = roomList.get(1);
         System.out.println("Available rooms are: " + roomList.toString());
         System.out.println("Joining room: " + room + "...");
         this.gameClient.joinRoom(room);
@@ -273,6 +273,33 @@ public class Amazons extends GamePlayer{
         move[0] = row;
         move[1] = col;
         return move;
+    }
+    
+    public int invertMove(int i){
+        switch (i){
+            case 1:
+                return 10;
+            case 2:
+                return 9;
+            case 3:
+                return 8;
+            case 4:
+                return 7;
+            case 5:
+                return 6;
+            case 6:
+                return 5;
+            case 7:
+                return 4;
+            case 8:
+                return 3;
+            case 9:
+                return 2;
+            case 10:
+                return 1;
+            default:
+                return i;
+        }
     }
     
     @Override
