@@ -19,7 +19,7 @@ public class State {
     Utility u = new Utility();
     
     static Random r = new Random();
-    static int numActions = 50;
+    static int numActions = 100;
     static double ep = 1e-6;
     int sims = 0, wins = 0;
     
@@ -89,12 +89,9 @@ public class State {
             State selected = current.select();
             visited.add(selected);
             winOrLoss = simulate(selected);
-        }else{
-            winOrLoss = current.checkGoalState();
         }
         for(State s : visited){
             s.updateWinsSims(winOrLoss);
-            //u.print("Wins: " + s.wins + " Sims " + s.sims);
         }
     }
     
