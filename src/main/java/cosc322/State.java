@@ -12,8 +12,8 @@ import java.util.Random;
  */
 
 public class State {
-    public static final int POS_MARKED_BLACK = 2;
-    public static final int POS_MARKED_WHITE = 1;
+    public static final int POS_MARKED_BLACK = 1;
+    public static final int POS_MARKED_WHITE = 2;
     public static final int POS_AVAILABLE = 0;
     public static final int POS_MARKED_ARROW = -1;
     Utility u = new Utility();
