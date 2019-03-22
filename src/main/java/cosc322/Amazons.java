@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Levi", "cosc322");
+        Amazons game = new Amazons("Kevin", "cosc322");
     }
     
     /*
@@ -88,9 +88,9 @@ public class Amazons extends GamePlayer{
                 
                 solace.think();
                 
-                Position currentQueen = new Position(invertMove(solace.oldQueen.i), solace.oldQueen.j);
-                Position ourQueenMove = new Position(invertMove(solace.newQueen.i), solace.newQueen.j);
-                Position ourArrowMove = new Position(invertMove(solace.arrow.i), solace.arrow.j);
+                Position currentQueen = new Position(solace.oldQueen.i, solace.oldQueen.j);
+                Position ourQueenMove = new Position(solace.newQueen.i, solace.newQueen.j);
+                Position ourArrowMove = new Position(solace.arrow.i, solace.arrow.j);
                 
                 u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
                 u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
@@ -99,6 +99,7 @@ public class Amazons extends GamePlayer{
                 
                 gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
                 
+                System.gc();
             }else{
                 //enemy goes first we wait for now and handleOpponentMove when the server sends it to us
                 turnCount++;
@@ -163,9 +164,9 @@ public class Amazons extends GamePlayer{
         
         solace.think();
         
-        Position currentQueen = new Position(invertMove(solace.oldQueen.i), solace.oldQueen.j);
-        Position ourQueenMove = new Position(invertMove(solace.newQueen.i), solace.newQueen.j);
-        Position ourArrowMove = new Position(invertMove(solace.arrow.i), solace.arrow.j);
+        Position currentQueen = new Position(solace.oldQueen.i, solace.oldQueen.j);
+        Position ourQueenMove = new Position(solace.newQueen.i, solace.newQueen.j);
+        Position ourArrowMove = new Position(solace.arrow.i, solace.arrow.j);
 
         u.print("Current Queen Position: [" + currentQueen.i + ", " + currentQueen.j + "]");
         u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
@@ -181,6 +182,7 @@ public class Amazons extends GamePlayer{
         }else if(opponentState.checkGoalState() == 0){
             u.print("The Game is Over - We Lose...");
         }
+        System.gc();
     }
     
     /*
@@ -267,33 +269,6 @@ public class Amazons extends GamePlayer{
         move[0] = row;
         move[1] = col;
         return move;
-    }
-    
-    public int invertMove(int i){
-        switch (i){
-            case 1:
-                return 10;
-            case 2:
-                return 9;
-            case 3:
-                return 8;
-            case 4:
-                return 7;
-            case 5:
-                return 6;
-            case 6:
-                return 5;
-            case 7:
-                return 4;
-            case 8:
-                return 3;
-            case 9:
-                return 2;
-            case 10:
-                return 1;
-            default:
-                return i;
-        }
     }
     
     @Override
