@@ -19,7 +19,7 @@ public class State {
     Utility u = new Utility();
     
     static Random r = new Random();
-    static int numActions = 100;
+    static int numActions = 150;
     static double ep = 1e-6;
     int sims = 0, wins = 0;
     
