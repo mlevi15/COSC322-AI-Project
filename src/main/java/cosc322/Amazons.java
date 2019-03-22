@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Kevin", "cosc322");
+        Amazons game = new Amazons("Levi", "cosc322");
     }
     
     /*
@@ -78,7 +78,7 @@ public class Amazons extends GamePlayer{
                 
                 turnCount++;
                 
-                guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
+                guiFrame.setTitle("Turn: " + turnCount + " | " + ourPlayer + " | " + enemyPlayer);
                 
                 state = new State(player, 2);
                 Solace solace = new Solace(state);
@@ -104,7 +104,7 @@ public class Amazons extends GamePlayer{
                 turnCount++;
                 ourPlayer = "White Player: " + this.userName();
                 enemyPlayer = "Black Player: " + msgDetails.get("player-black");
-                guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-black") + " | " + ourPlayer + " | " + enemyPlayer);
+                guiFrame.setTitle("Turn: " + turnCount + " | " + ourPlayer + " | " + enemyPlayer);
                 player  = 2;
             }
             
@@ -121,12 +121,7 @@ public class Amazons extends GamePlayer{
         //ENEMY TURN
         turnCount++;
         
-        if(player == 1){
-            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-black") + " | " + ourPlayer + " | " + enemyPlayer);
-        }else{
-            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-white") + " | " + ourPlayer + " | " + enemyPlayer);
-        }
-        
+           
 	u.print("Opponent's Queen Move: " + msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR));
         u.print("Opponent's Arrow Move: " + msgDetails.get(AmazonsGameMessage.ARROW_POS));
         
@@ -137,7 +132,7 @@ public class Amazons extends GamePlayer{
 	//System.out.println("QCurr: " + qcurr);
 	//System.out.println("QNew: " + qnew);
 	//System.out.println("Arrow: " + arrow);
-
+        guiFrame.setTitle("Turn: " + turnCount +  " | " + ourPlayer + " | " + enemyPlayer);
 	board.markPosition(qnew.get(0), qnew.get(1), arrow.get(0), arrow.get(1), qcurr.get(0), qcurr.get(1), true);	
         
         int turn = 0;
@@ -161,13 +156,8 @@ public class Amazons extends GamePlayer{
          
         
         //OUR TURN
-        turnCount++;
         
-        if(player == 1){
-            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-black") + " | " + ourPlayer + " | " + enemyPlayer);
-        }else{
-            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-white") + " | " + ourPlayer + " | " + enemyPlayer);
-        }
+      
         
         Solace solace = new Solace(opponentState);
         
@@ -181,8 +171,8 @@ public class Amazons extends GamePlayer{
         u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
         u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
         
+        guiFrame.setTitle("Turn: " + turnCount + " | " + ourPlayer + " | " + enemyPlayer);
         board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
-
         gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
 
         //check to see if we are at a goal state
