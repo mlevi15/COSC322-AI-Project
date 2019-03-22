@@ -163,7 +163,11 @@ public class Amazons extends GamePlayer{
         //OUR TURN
         turnCount++;
         
-        guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);
+        if(player == 1){
+            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-black") + " | " + ourPlayer + " | " + enemyPlayer);
+        }else{
+            guiFrame.setTitle("Turn: " + turnCount + " | Move: " + msgDetails.get("player-white") + " | " + ourPlayer + " | " + enemyPlayer);
+        }
         
         Solace solace = new Solace(opponentState);
         
