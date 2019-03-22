@@ -36,7 +36,7 @@ public class Solace {
 //            root.selectMove();
 //        }
         
-        while((System.currentTimeMillis() - s) < 10 * 1000){
+        while((System.currentTimeMillis() - s) < 5 * 1000){
             root.selectMove();
         }
         
