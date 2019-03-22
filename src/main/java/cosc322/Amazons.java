@@ -147,19 +147,8 @@ public class Amazons extends GamePlayer{
         
         //TO-DO: add code to handle enemy move in our search tree
         
-        //check to see if we are at a goal state
-        
-        if(opponentState.checkGoalState() == 1){
-            u.print("The Game is Over - We Win!!!");
-        }else if(opponentState.checkGoalState() == 0){
-            u.print("The Game is Over - We Lose...");
-        }
-         
-        
         //OUR TURN
-        
-      
-        
+
         Solace solace = new Solace(opponentState);
         
         solace.think();
@@ -167,15 +156,17 @@ public class Amazons extends GamePlayer{
         Position currentQueen = new Position(solace.oldQueen.i, solace.oldQueen.j);
         Position ourQueenMove = new Position(solace.newQueen.i, solace.newQueen.j);
         Position ourArrowMove = new Position(solace.arrow.i, solace.arrow.j);
-
-        u.print("Current Queen Position: [" + currentQueen.i + ", " + currentQueen.j + "]");
-        u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
-        u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
         
-        guiFrame.setTitle("Turn: " + turnCount + " | " + ourPlayer + " | " + enemyPlayer);
-        board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
-        gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
+        if(solace.newState != null){
+            u.print("Current Queen Position: [" + currentQueen.i + ", " + currentQueen.j + "]");
+            u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
+            u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
 
+            guiFrame.setTitle("Turn: " + turnCount + " | " + ourPlayer + " | " + enemyPlayer);
+            board.markPosition(ourQueenMove.i, ourQueenMove.j, ourArrowMove.i, ourArrowMove.j, currentQueen.i, currentQueen.j, false);
+            gameClient.sendMoveMessage(this.combinedMove(currentQueen.i, currentQueen.j), this.combinedMove(ourQueenMove.i, ourQueenMove.j), this.combinedMove(ourArrowMove.i, ourArrowMove.j));
+        }
+        
         //check to see if we are at a goal state
         if(opponentState.checkGoalState() == 1){
             u.print("The Game is Over - We Win!!!");

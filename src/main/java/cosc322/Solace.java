@@ -18,6 +18,7 @@ public class Solace {
     int player;
     int turn;
     State root;
+    State newState;
     Position arrow;
     Position newQueen;
     Position oldQueen;
@@ -32,39 +33,44 @@ public class Solace {
     public void think(){
         long s = System.currentTimeMillis();
 
-//        for(int i = 0; i < 3; i++){
+//        for(int i = 0; i < 1000; i++){
 //            root.selectMove();
 //        }
         
-        while((System.currentTimeMillis() - s) < 5 * 1000){
+        while((System.currentTimeMillis() - s) < 23 * 1000){
             root.selectMove();
         }
         
         double maxRatio = 0;
-        State move = null;
+        newState = null;
         Iterator moveItr = root.children.iterator();
         while(moveItr.hasNext()){
             State state = (State)moveItr.next();
             double ratio = (double)state.wins / (double)state.sims;
             if(ratio > maxRatio){
                 maxRatio = ratio;
-                move = state;
+                newState = state;
             }
         }
-        u.print("============================================");
-        u.print("Max Ratio: " + maxRatio);
-        u.print("Wins: " + move.wins + " Sims " + move.sims);
-        u.print(move.toString());
-        u.print("============================================");
-
-        this.oldQueen = move.move.oldQueen;
-        this.newQueen = move.move.newQueen;
-        this.arrow = move.move.arrow;
         
+        if(newState != null){
+            u.print("============================================");
+            u.print("Max Ratio: " + maxRatio);
+            u.print("Wins: " + newState.wins + " Sims " + newState.sims);
+            u.print(newState.toString());
+
+            this.oldQueen = newState.move.oldQueen;
+            this.newQueen = newState.move.newQueen;
+            this.arrow = newState.move.arrow;
+        }
+        else{
+            u.print("Terminal State");
+        }
         u.print("Time: " + (System.currentTimeMillis() - s) + " milliseconds");
         u.print("Simulations: " + root.sims);
-//        StateView sv = new StateView(root);
-//        sv.showTree("After play outs");
+        
+        //StateView sv = new StateView(root);
+        //sv.showTree("Solace Tree");
     }
 }
 
