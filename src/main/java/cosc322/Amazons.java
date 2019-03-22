@@ -230,7 +230,7 @@ public class Amazons extends GamePlayer{
         guiFrame = new JFrame();
 
         guiFrame.setSize(800, 600);
-        guiFrame.setTitle("Turn: " + turnCount + " | Move: " + this.userName() + " | " + ourPlayer + " | " + enemyPlayer);	
+        guiFrame.setTitle("Turn: " + turnCount + " | " + ourPlayer + " | " + enemyPlayer);	
 
         guiFrame.setLocation(200, 200);
         guiFrame.setVisible(true);
