@@ -215,10 +215,8 @@ public class State {
         for(int i = 0; i < this.queens.size(); i++){
             if(canMove[i]){
                 s = new RandomMove(currState, currState.queens.get(i)).ranState;
-                if(s != null){
-                    u.print(s.toString());
+                if(s != null)
                     return s;
-                }
             }
         }
         return null;
