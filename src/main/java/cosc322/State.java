@@ -259,14 +259,14 @@ public class State {
                 canWhiteMove = true;
         }
         
-        if(this.player == 1 && !canWhiteMove)
-            return 1;
-        else if(this.player == 2 && !canBlackMove)
-            return 1;
-        else if(this.player == 1 && !canBlackMove)
+        if(this.player == 1 && !canBlackMove)
             return 0;
         else if(this.player == 2 && !canWhiteMove)
             return 0;
+        else if(this.player == 1 && !canWhiteMove)
+            return 1;
+        else if(this.player == 2 && !canBlackMove)
+            return 1;
         else
             return -1;
     }

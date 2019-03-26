@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Solace AI", "cosc322");
+        Amazons game = new Amazons("Kevin", "cosc322");
     }
     
     /*
