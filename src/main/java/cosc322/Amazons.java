@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Solace", "cosc322");
+        Amazons game = new Amazons("Kevin", "cosc322");
     }
     
     /*
@@ -123,7 +123,8 @@ public class Amazons extends GamePlayer{
         turnCount++;
         
            
-	u.print("Opponent's Queen Move: " + msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR));
+	u.print("Opponent's Current Queen Pos: " + msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR));
+        u.print("Opponent's Queen Move: " + msgDetails.get(AmazonsGameMessage.Queen_POS_NEXT));
         u.print("Opponent's Arrow Move: " + msgDetails.get(AmazonsGameMessage.ARROW_POS));
         
 	ArrayList<Integer> qcurr = (ArrayList<Integer>) msgDetails.get(AmazonsGameMessage.QUEEN_POS_CURR);
