@@ -70,11 +70,11 @@ public class GameBoard extends JPanel{
 
         gameModel.gameBoard[1][4] = tagW;
         gameModel.gameBoard[1][7] = tagW;
-        gameModel.gameBoard[3][1] = tagW;
-        gameModel.gameBoard[3][10] = tagW;
+        gameModel.gameBoard[4][1] = tagW;
+        gameModel.gameBoard[4][10] = tagW;
 
-        gameModel.gameBoard[8][1] = tagB;
-        gameModel.gameBoard[8][10] = tagB;
+        gameModel.gameBoard[7][1] = tagB;
+        gameModel.gameBoard[7][10] = tagB;
         gameModel.gameBoard[10][4] = tagB;
         gameModel.gameBoard[10][7] = tagB;		
         }

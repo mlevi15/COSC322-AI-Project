@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Kevin", "cosc322");
+        Amazons game = new Amazons("Solace", "cosc322");
     }
     
     /*
@@ -211,7 +211,7 @@ public class Amazons extends GamePlayer{
     @Override
     public void onLogin() {
         ArrayList<String> roomList = this.gameClient.getRoomList();
-        String room = roomList.get(1);
+        String room = roomList.get(2);
         System.out.println("Available rooms are: " + roomList.toString());
         System.out.println("Joining room: " + room + "...");
         this.gameClient.joinRoom(room);
