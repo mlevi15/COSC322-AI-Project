@@ -32,16 +32,11 @@ public class Solace {
     
     public void think(){
         long s = System.currentTimeMillis();
-
-//        for(int i = 0; i < 1000; i++){
-//            root.selectMove();
-//        }
-        
         while((System.currentTimeMillis() - s) < 3 * 1000){
             root.selectMove();
         }
         
-        double maxRatio = 0;
+        double maxRatio = -1;
         newState = null;
         Iterator moveItr = root.children.iterator();
         while(moveItr.hasNext()){

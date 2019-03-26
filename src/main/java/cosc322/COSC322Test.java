@@ -81,17 +81,18 @@ public class COSC322Test{
                         {0, -1, -1,  0,  -1,  0,  -1,  -1,  -1,  0,  0},
                         {0,  1, -1,  -1,  2,  -1,  0,  2,  0,  0,  0}};
         
-//Failing state        
-//0 0 0 0 0 0 -1 0 1 -1 
-//0 0 -1 0 0 -1 -1 -1 2 0 
-//2 0 -1 -1 -1 -1 -1 -1 -1 -1 
-//0 0 -1 -1 0 2 -1 -1 -1 -1 
-//0 -1 0 -1 -1 1 -1 0 0 0 
-//-1 -1 0 -1 -1 -1 -1 0 -1 0 
-//-1 -1 -1 -1 0 -1 -1 0 -1 0 
-//0 0 -1 1 -1 1 -1 -1 -1 -1 
-//-1 -1 -1 -1 -1 -1 -1 -1 0 0 
-//0 -1 0 -1 2 -1 -1 0 0 -1 
+        //Failing state        
+        int[][] test4 = {{0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0},
+                        {0, 0, 0, 0, 0, 0, 0, -1, 0, 1, -1}, 
+                        {0, 0, 0, -1, 0, 0, -1, -1, -1, 2, 0}, 
+                        {0, 2, 0, -1, -1, -1, -1, -1, -1, -1, -1}, 
+                        {0, 0, 0, -1, -1, -1, 2, -1, -1, -1, -1}, 
+                        {0, 0, -1, 0, -1, -1, 1, -1, 0, 0, 0}, 
+                        {0, -1, -1, 0, -1, -1, -1, -1, 0, -1, 0},
+                        {0, -1, -1, -1, -1, -1, -1, -1, 0, -1, 0}, 
+                        {0, 0, 0, -1, 1, -1, 1, -1, -1, -1, -1},
+                        {0, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0}, 
+                        {0, 0, -1, 0, -1, 2, -1, -1, 0, 0, -1}};
 
 //============================================
 //Max Ratio: 0.8481375358166189
@@ -142,14 +143,13 @@ public class COSC322Test{
 //Terminal State
 //Time: 15504 milliseconds
 //Simulations: 14922
-        
-        long st = System.currentTimeMillis();
-        State s = new State(1, 2, test2);
+
+        State s = new State(1, 2, test4);
         Solace solace = new Solace(s);
         solace.think();
-//        u.print("Old: " + solace.oldQueen.toString());
-//        u.print("New: " + solace.newQueen.toString());
-//        u.print("Arrow: " + solace.arrow.toString());
+        u.print("Old: " + solace.oldQueen.toString());
+        u.print("New: " + solace.newQueen.toString());
+        u.print("Arrow: " + solace.arrow.toString());
     }
     
     public void testGetRandomChild(){

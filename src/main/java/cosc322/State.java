@@ -210,6 +210,8 @@ public class State {
                 defCantMove = false;
         if(defCantMove)
             return null;
+        
+        s = null;
         for(int i = 0; i < this.queens.size(); i++){
             if(canMove[i]){
                 s = new RandomMove(currState, currState.queens.get(i)).ranState;
