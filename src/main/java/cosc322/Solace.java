@@ -42,7 +42,6 @@ public class Solace {
         while(moveItr.hasNext()){
             State state = (State)moveItr.next();
             double ratio = (double)state.wins / (double)state.sims;
-            u.print(state.toString());
             if(ratio > maxRatio){
                 maxRatio = ratio;
                 newState = state;
