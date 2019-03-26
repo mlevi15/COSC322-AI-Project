@@ -19,7 +19,7 @@ public class State {
     Utility u = new Utility();
     
     static Random r = new Random();
-    static int numActions = 150;
+    static int numActions = 80;
     static double ep = 1e-6;
     int sims = 0, wins = 0;
     
@@ -230,11 +230,11 @@ public class State {
 
         state[1][4] = POS_MARKED_WHITE;
         state[1][7] = POS_MARKED_WHITE;
-        state[3][1] = POS_MARKED_WHITE;
-        state[3][10] = POS_MARKED_WHITE;
+        state[4][1] = POS_MARKED_WHITE;
+        state[4][10] = POS_MARKED_WHITE;
 
-        state[8][1] = POS_MARKED_BLACK;
-        state[8][10] = POS_MARKED_BLACK;
+        state[7][1] = POS_MARKED_BLACK;
+        state[7][10] = POS_MARKED_BLACK;
         state[10][4] = POS_MARKED_BLACK;
         state[10][7] = POS_MARKED_BLACK;
         
