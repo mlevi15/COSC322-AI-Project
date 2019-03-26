@@ -39,7 +39,7 @@ public class Amazons extends GamePlayer{
     
    
     public static void main(String[] args) { 
-        Amazons game = new Amazons("Kevin", "cosc322");
+        Amazons game = new Amazons("Solace AI", "cosc322");
     }
     
     /*
@@ -154,11 +154,11 @@ public class Amazons extends GamePlayer{
         
         solace.think();
         
-        Position currentQueen = new Position(solace.oldQueen.i, solace.oldQueen.j);
-        Position ourQueenMove = new Position(solace.newQueen.i, solace.newQueen.j);
-        Position ourArrowMove = new Position(solace.arrow.i, solace.arrow.j);
-        
         if(solace.newState != null){
+            Position currentQueen = new Position(solace.oldQueen.i, solace.oldQueen.j);
+            Position ourQueenMove = new Position(solace.newQueen.i, solace.newQueen.j);
+            Position ourArrowMove = new Position(solace.arrow.i, solace.arrow.j);
+            
             u.print("Current Queen Position: [" + currentQueen.i + ", " + currentQueen.j + "]");
             u.print("Our Queen Move: [" + ourQueenMove.i + ", " + ourQueenMove.j + "]");
             u.print("Our Arrow Move: [" + ourArrowMove.i + ", " + ourArrowMove.j + "]");
