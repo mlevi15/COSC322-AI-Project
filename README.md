@@ -1,6 +1,6 @@
 # COSC322-AI-Project
 ## Overview
- A Java-based game client with a graphical user interface for the Game of the Amazons.
+A Java-based game client with a graphical user interface for the Game of the Amazons. A Monte Carlo tree search is used to find a winning strategy.
 ## API for Player-Server Communication
 The communications between a game player and the game server are supported by a cosc322-dedicated Java library [ygraph-ai-smartfox-client](https://people.ok.ubc.ca/yongg/teaching/cosc322/project-and-assignments/cosc322-game-client-api/) (the library is a customized extension of the SmartFox game server).
 The server has a set of "game rooms" that two players can log into in order to play. The server also provides functionalities to relay game-related messages from one player to other players in the same game room. The server-side support is (always) under development.
